@@ -15,7 +15,8 @@ var CONFIG = {
   SHEETS: {
     PEMILIH: 'pemilih',
     PASLON: 'paslon',
-    LOG_SUARA: 'log_suara'
+    LOG_SUARA: 'log_suara',
+    GALERI: 'galeri'
   },
   HEADERS: {
     pemilih: [
@@ -43,6 +44,15 @@ var CONFIG = {
       'id_paslon',
       'timestamp',
       'token_hash'
+    ],
+    galeri: [
+      'id_galeri',
+      'urutan',
+      'posisi_slot',
+      'judul',
+      'foto_url',
+      'keterangan',
+      'aktif'
     ]
   }
 };
@@ -56,6 +66,7 @@ function onOpen() {
   ui.createMenu('⚡ E-Voting SMANSA')
     .addItem('🔑 Generate Akun Pemilih Massal (Kolom D & E)', 'generateVoterAccountsMassal')
     .addSeparator()
+    .addItem('🖼️ Sinkronisasi / Buat Sheet Galeri', 'initGaleriSheetUI')
     .addItem('🔄 Inisialisasi / Safe Migrate Database', 'initDatabase')
     .addToUi();
 }
@@ -270,6 +281,71 @@ var DUMMY_PASLON = [
   }
 ];
 
+var DUMMY_GALERI = [
+  {
+    id_galeri: 'GLR-01',
+    urutan: 1,
+    posisi_slot: 'Kiri Atas',
+    judul: 'Debat Terbuka Kandidat OSIS',
+    foto_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Penyampaian gagasan dan program kerja unggulan kandidat di hadapan warga SMAN 1 Pontianak.',
+    aktif: 'YA'
+  },
+  {
+    id_galeri: 'GLR-02',
+    urutan: 2,
+    posisi_slot: 'Kiri Bawah',
+    judul: 'Antusiasme Warga SMANSA',
+    foto_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Partisipasi aktif siswa-siswi dalam rangkaian Pesta Demokrasi SMAN 1 Pontianak.',
+    aktif: 'YA'
+  },
+  {
+    id_galeri: 'GLR-03',
+    urutan: 3,
+    posisi_slot: 'Tengah Vertikal',
+    judul: 'Orasi Visi & Misi Paslon',
+    foto_url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Momen pemaparan visi dan misi calon Ketua & Wakil Ketua OSIS periode 2026/2027.',
+    aktif: 'YA'
+  },
+  {
+    id_galeri: 'GLR-04',
+    urutan: 4,
+    posisi_slot: 'Kanan Atas',
+    judul: 'Simulasi Bilik E-Voting',
+    foto_url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Persiapan sistem pemilihan elektronik berbasis tablet yang cepat, rahasia, dan akurat.',
+    aktif: 'YA'
+  },
+  {
+    id_galeri: 'GLR-05',
+    urutan: 5,
+    posisi_slot: 'Kanan Bawah',
+    judul: 'Komisi Pemilihan OSIS (KPO)',
+    foto_url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Panitia pelaksana Pemilihan Ketua & Wakil Ketua OSIS SMAN 1 Pontianak.',
+    aktif: 'YA'
+  }
+];
+
+/**
+ * Fungsi UI khusus untuk membuat/menyinkronkan sheet "galeri" langsung dari menu Spreadsheet
+ */
+function initGaleriSheetUI() {
+  var ui = SpreadsheetApp.getUi();
+  var result = initDatabase();
+  if (result && result.success) {
+    ui.alert(
+      '🖼️ Sinkronisasi Sheet Galeri Berhasil',
+      'Sheet "galeri" telah siap digunakan dengan 5 slot tata letak (Kiri Atas, Kiri Bawah, Tengah Vertikal, Kanan Atas, Kanan Bawah).\n\nSilakan ganti kolom "foto_url" dengan link foto Google Drive (akses publik) atau URL gambar langsung.',
+      ui.ButtonSet.OK
+    );
+  } else {
+    ui.alert('Gagal Sinkronisasi', (result && result.message) || 'Terjadi kesalahan.', ui.ButtonSet.OK);
+  }
+}
+
 /**
  * Inisialisasi Database Non-Destruktif (Safe Migrate):
  * Memeriksa sheet dan menyinkronkan header tanpa pernah menghapus baris data pengguna.
@@ -288,6 +364,10 @@ function initDatabase() {
 
     var resLog = safeMigrateSheet(ss, CONFIG.SHEETS.LOG_SUARA, CONFIG.HEADERS.log_suara);
     logResults.push(resLog);
+
+    var resGaleri = safeMigrateSheet(ss, CONFIG.SHEETS.GALERI, CONFIG.HEADERS.galeri);
+    logResults.push(resGaleri);
+    seedDataIfEmpty(ss, CONFIG.SHEETS.GALERI, DUMMY_GALERI, CONFIG.HEADERS.galeri);
 
     SpreadsheetApp.flush();
     return { success: true, message: 'Safe Migrate database berhasil!', details: logResults };

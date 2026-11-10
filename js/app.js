@@ -21,6 +21,9 @@ let currentActiveSectionIndex = 0;
 let currentActiveOrasiIndex = 0;
 let sectionObserverInstance = null;
 let cachedPaslonList = [];
+let cachedGaleriList = [];
+let currentActiveGaleriPage = 0;
+let totalGaleriPages = 1;
 let currentVisiModalIndex = 0;
 
 let currentFocusedPaslonIndex = null;
@@ -79,14 +82,17 @@ function formatVisiMisiHtml(text) {
  * Memilih Paslon untuk ekspansi inline:
  * Paslon terpilih tetap di kiri, paslon lainnya tergeser ke dock samping,
  * dan panel Visi & Misi otomatis muncul di sebelahnya.
+ * Jika sebelumnya sedang memutar video orasi paslon lain, video otomatis tertutup.
  */
 function selectHomeCandidate(activeIdx) {
   if (!cachedPaslonList || cachedPaslonList.length === 0) return;
 
+  // Tutup/hentikan semua video YouTube saat beralih ke paslon lain
+  stopAllYouTubeVideos();
+
   currentFocusedPaslonIndex = activeIdx;
   const grid = document.getElementById('homeCandidatesGrid');
   const detailContainer = document.getElementById('inlineDetailContainer');
-  const footerNote = document.getElementById('paslonSectionFooterNote');
 
   if (!grid || !detailContainer) return;
 
@@ -95,10 +101,6 @@ function selectHomeCandidate(activeIdx) {
 
   grid.style.display = 'none';
   detailContainer.style.display = 'flex';
-
-  if (footerNote) {
-    footerNote.textContent = 'Klik paslon di sebelah kanan untuk beralih, atau klik Tutup untuk melihat semua kandidat';
-  }
 
   const noUrut = (activePaslon.nomor_urut < 10 ? '0' : '') + activePaslon.nomor_urut;
   const label = activePaslon.label_paslon || ('PASLON ' + activePaslon.nomor_urut);
@@ -121,28 +123,25 @@ function selectHomeCandidate(activeIdx) {
   if (slogan) {
     leftHtml += '    <p class="card-slogan">"' + slogan + '"</p>';
   }
-  leftHtml += '    <button type="button" class="card-btn-close" onclick="window.App.closeHomeCandidateDetail()">✕ Tutup</button>';
+  leftHtml += '    <button type="button" class="card-btn-close" onclick="window.App.closeHomeCandidateDetail()">⮌ Kembali</button>';
   leftHtml += '  </div>';
   leftHtml += '</div>';
 
-  // 2. Kolom Tengah: Panel Visi & Misi Paslon Aktif
+  // 2. Kolom Tengah: Panel Visi & Misi Paslon Aktif (2 Header: Visi & Misi dan Video Orasi)
   let centerHtml = '';
-  centerHtml += '<div class="inline-visi-panel">';
-  centerHtml += '  <div class="visi-panel-header">';
-  centerHtml += '    <div class="visi-panel-title">';
+  centerHtml += '<div class="inline-visi-panel" id="inlineCenterPanel">';
+  centerHtml += '  <div class="visi-panel-header" role="tablist">';
+  centerHtml += '    <button type="button" class="visi-header-tab active" id="inlineTabVisi" role="tab" aria-selected="true" onclick="window.App.showInlineVisiMisi(' + activeIdx + ')">';
   centerHtml += '      <span class="title-sparkle">&#10022;</span>';
-  centerHtml += '      <span>VISI &amp; MISI ' + label + '</span>';
-  centerHtml += '    </div>';
-  centerHtml += '    <button type="button" class="btn-close-detail" onclick="window.App.closeHomeCandidateDetail()">✕ Tutup</button>';
-  centerHtml += '  </div>';
-  centerHtml += '  <div class="visi-panel-body">';
-  centerHtml += formatVisiMisiHtml(activePaslon.visi_misi);
-  centerHtml += '  </div>';
-  centerHtml += '  <div class="visi-panel-footer">';
-  centerHtml += '    <button type="button" class="btn-orasi-shortcut" onclick="window.App.goToOrasi(' + activeIdx + ')">';
-  centerHtml += '      <span>🎬 Tonton Video Orasi</span>';
+  centerHtml += '      <span>VISI &amp; MISI</span>';
   centerHtml += '    </button>';
-  centerHtml += '    <button type="button" class="btn-close-detail" onclick="window.App.closeHomeCandidateDetail()">⮌ Semua Paslon</button>';
+  centerHtml += '    <button type="button" class="visi-header-tab" id="inlineTabOrasi" role="tab" aria-selected="false" onclick="window.App.showInlineOrasiVideo(' + activeIdx + ')">';
+  centerHtml += '      <span class="title-sparkle">&#9654;</span>';
+  centerHtml += '      <span>VIDEO ORASI</span>';
+  centerHtml += '    </button>';
+  centerHtml += '  </div>';
+  centerHtml += '  <div class="visi-panel-body" id="inlinePanelBody">';
+  centerHtml += formatVisiMisiHtml(activePaslon.visi_misi);
   centerHtml += '  </div>';
   centerHtml += '</div>';
 
@@ -178,21 +177,96 @@ function selectHomeCandidate(activeIdx) {
 }
 
 /**
- * Menutup tampilan inline detail dan mengembalikan 3 kartu paslon berdampingan
+ * Mengubah tabel Visi & Misi secara langsung menjadi pemutar Video Orasi YouTube paslon terkait
+ * dengan animasi transisi yang mulus.
+ * @param {number} activeIdx - Indeks paslon aktif
+ */
+function showInlineOrasiVideo(activeIdx) {
+  if (!cachedPaslonList || !cachedPaslonList[activeIdx]) return;
+
+  stopAllYouTubeVideos();
+
+  const activePaslon = cachedPaslonList[activeIdx];
+  const label = activePaslon.label_paslon || ('PASLON ' + activePaslon.nomor_urut);
+  const videoId = ORASI_VIDEO_IDS[activeIdx] || activePaslon.youtube_video_id || 'pD5AaON3dBE';
+
+  const tabVisi = document.getElementById('inlineTabVisi');
+  const tabOrasi = document.getElementById('inlineTabOrasi');
+  const bodyEl = document.getElementById('inlinePanelBody');
+
+  if (tabVisi) {
+    tabVisi.classList.remove('active');
+    tabVisi.setAttribute('aria-selected', 'false');
+  }
+  if (tabOrasi) {
+    tabOrasi.classList.add('active');
+    tabOrasi.setAttribute('aria-selected', 'true');
+  }
+
+  if (bodyEl) {
+    bodyEl.classList.remove('video-mode');
+    // Trigger reflow agar animasi smoothPanelContentSwap berputar ulang dengan halus
+    void bodyEl.offsetWidth;
+    bodyEl.classList.add('video-mode');
+    bodyEl.innerHTML =
+      '<div class="inline-orasi-video-frame">' +
+      '  <iframe ' +
+      '    id="inlineOrasiIframe" ' +
+      '    src="https://www.youtube-nocookie.com/embed/' + videoId + '?enablejsapi=1&controls=1&rel=0&autoplay=1" ' +
+      '    title="Orasi ' + label + '" ' +
+      '    referrerpolicy="strict-origin-when-cross-origin" ' +
+      '    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+      '    allowfullscreen>' +
+      '  </iframe>' +
+      '</div>';
+  }
+}
+
+/**
+ * Mengembalikan tampilan panel tengah dari Video Orasi kembali ke tabel Visi & Misi
+ * serta menutup pemutar video YouTube.
+ * @param {number} activeIdx - Indeks paslon aktif
+ */
+function showInlineVisiMisi(activeIdx) {
+  if (!cachedPaslonList || !cachedPaslonList[activeIdx]) return;
+
+  stopAllYouTubeVideos();
+
+  const activePaslon = cachedPaslonList[activeIdx];
+
+  const tabVisi = document.getElementById('inlineTabVisi');
+  const tabOrasi = document.getElementById('inlineTabOrasi');
+  const bodyEl = document.getElementById('inlinePanelBody');
+
+  if (tabVisi) {
+    tabVisi.classList.add('active');
+    tabVisi.setAttribute('aria-selected', 'true');
+  }
+  if (tabOrasi) {
+    tabOrasi.classList.remove('active');
+    tabOrasi.setAttribute('aria-selected', 'false');
+  }
+
+  if (bodyEl) {
+    bodyEl.classList.remove('video-mode');
+    void bodyEl.offsetWidth;
+    bodyEl.innerHTML = formatVisiMisiHtml(activePaslon.visi_misi);
+  }
+}
+
+/**
+ * Menutup tampilan inline detail, menghentikan video, dan mengembalikan 3 kartu paslon berdampingan
  */
 function closeHomeCandidateDetail() {
+  stopAllYouTubeVideos();
   currentFocusedPaslonIndex = null;
   const grid = document.getElementById('homeCandidatesGrid');
   const detailContainer = document.getElementById('inlineDetailContainer');
-  const footerNote = document.getElementById('paslonSectionFooterNote');
 
   if (grid) grid.style.display = 'grid';
   if (detailContainer) {
     detailContainer.style.display = 'none';
     detailContainer.innerHTML = '';
-  }
-  if (footerNote) {
-    footerNote.textContent = 'Sentuh kartu untuk membaca visi-misi atau gulir ke bawah untuk menyaksikan video orasi';
   }
 }
 
@@ -371,12 +445,6 @@ function slideOrasiTo(targetIndex) {
       dot.classList.remove('active');
     }
   });
-
-  const footerNote = document.getElementById('orasiSectionFooterNote');
-  if (footerNote) {
-    const noStr = '0' + (clampedIndex + 1);
-    footerNote.innerHTML = 'SMAN 1 Pontianak &bull; Orasi Visi &amp; Misi Paslon Nomor Urut ' + noStr + ' &mdash; Geser ke samping untuk paslon lainnya';
-  }
 }
 
 /**
@@ -698,7 +766,7 @@ function switchView(viewId) {
  */
 function stopAllYouTubeVideos() {
   resetOrasiTouchShields();
-  const iframes = document.querySelectorAll('.tv-screen iframe');
+  const iframes = document.querySelectorAll('.tv-screen iframe, .inline-orasi-video-frame iframe');
   iframes.forEach(function (iframe) {
     try {
       // 1. Kirim sinyal YouTube iframe API untuk pause video
@@ -903,8 +971,185 @@ function initKeyboardNavigation() {
     } else if (e.key === 'ArrowLeft' && currentActiveSectionIndex === 2) {
       e.preventDefault();
       prevOrasi();
+    } else if (e.key === 'ArrowRight' && currentActiveSectionIndex === 4) {
+      e.preventDefault();
+      nextGaleriPage();
+    } else if (e.key === 'ArrowLeft' && currentActiveSectionIndex === 4) {
+      e.preventDefault();
+      prevGaleriPage();
     }
   });
+}
+
+/**
+ * Memuat dan menyinkronkan data Galeri dari Google Sheets (sheet "galeri" via code.gs)
+ */
+async function loadHomeGaleri() {
+  const track = document.getElementById('galeriSliderTrack');
+  if (!track) return;
+
+  try {
+    let galeriList = [];
+    if (window.VotingAPI && typeof window.VotingAPI.fetchGaleriList === 'function') {
+      galeriList = await window.VotingAPI.fetchGaleriList();
+    }
+
+    if (Array.isArray(galeriList) && galeriList.length > 0) {
+      cachedGaleriList = galeriList;
+      renderHomeGaleriBento(galeriList);
+    }
+  } catch (error) {
+    console.warn('[App] Gagal memuat galeri, menampilkan kerangka galeri default:', error);
+  }
+}
+
+/**
+ * Merender tata letak 5-Slot Bento Grid Galeri sesuai referensi (mendukung multi-halaman jika > 5 foto di Spreadsheet)
+ * @param {Array} list - Daftar item galeri dari database
+ */
+function renderHomeGaleriBento(list) {
+  const track = document.getElementById('galeriSliderTrack');
+  const prevBtn = document.getElementById('btnGaleriPrev');
+  const nextBtn = document.getElementById('btnGaleriNext');
+  const paginationBar = document.getElementById('galeriPaginationBar');
+
+  if (!track) return;
+
+  const itemsPerPage = 5;
+  totalGaleriPages = Math.max(1, Math.ceil(list.length / itemsPerPage));
+  currentActiveGaleriPage = 0;
+
+  let trackHtml = '';
+
+  for (let pageIdx = 0; pageIdx < totalGaleriPages; pageIdx++) {
+    const startIdx = pageIdx * itemsPerPage;
+    trackHtml += '<div class="galeri-page' + (pageIdx === 0 ? ' active-page' : '') + '" data-galeri-page="' + pageIdx + '">';
+    trackHtml += '  <div class="galeri-bento-grid">';
+
+    for (let slot = 1; slot <= 5; slot++) {
+      const itemIdx = startIdx + (slot - 1);
+      const item = list[itemIdx];
+      const rawUrl = item && item.foto_url ? String(item.foto_url).trim() : '';
+
+      if (item && rawUrl) {
+        const formattedUrl = (window.VotingAPI && typeof window.VotingAPI.formatImageUrl === 'function')
+          ? window.VotingAPI.formatImageUrl(rawUrl)
+          : rawUrl;
+        const judul = item.judul || ('Dokumentasi #' + (itemIdx + 1));
+        const ket = item.keterangan || '';
+
+        trackHtml += '<article class="galeri-card galeri-slot-' + slot + ' has-photo" data-slot="' + slot + '" onclick="window.App.openGaleriPreviewModal(' + itemIdx + ')" title="' + judul.replace(/"/g, '&quot;') + '">';
+        trackHtml += '  <img class="galeri-card-img" src="' + formattedUrl + '" alt="' + judul.replace(/"/g, '&quot;') + '" referrerpolicy="no-referrer" loading="lazy">';
+        if (item.judul || item.keterangan) {
+          trackHtml += '  <div class="galeri-card-overlay">';
+          if (item.judul) {
+            trackHtml += '    <div class="galeri-card-title">' + judul + '</div>';
+          }
+          if (ket) {
+            trackHtml += '    <div class="galeri-card-desc">' + ket + '</div>';
+          }
+          trackHtml += '  </div>';
+        }
+        trackHtml += '</article>';
+      } else {
+        trackHtml += '<article class="galeri-card galeri-slot-' + slot + '" data-slot="' + slot + '"></article>';
+      }
+    }
+
+    trackHtml += '  </div>';
+    trackHtml += '</div>';
+  }
+
+  track.innerHTML = trackHtml;
+  track.style.transform = 'translate3d(0%, 0, 0)';
+
+  if (totalGaleriPages > 1) {
+    if (prevBtn) prevBtn.style.display = 'flex';
+    if (nextBtn) nextBtn.style.display = 'flex';
+    if (paginationBar) {
+      paginationBar.style.display = 'flex';
+      let dotsHtml = '';
+      for (let p = 0; p < totalGaleriPages; p++) {
+        dotsHtml += '<button type="button" class="galeri-page-dot' + (p === 0 ? ' active' : '') + '" onclick="window.App.slideGaleriToPage(' + p + ')" aria-label="Halaman Galeri ' + (p + 1) + '"></button>';
+      }
+      paginationBar.innerHTML = dotsHtml;
+    }
+  } else {
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+    if (paginationBar) paginationBar.style.display = 'none';
+  }
+}
+
+/**
+ * Menggeser halaman Galeri jika terdapat lebih dari 5 foto di Spreadsheet
+ * @param {number} targetPage - Indeks halaman galeri
+ */
+function slideGaleriToPage(targetPage) {
+  if (totalGaleriPages <= 1) return;
+  const clamped = ((targetPage % totalGaleriPages) + totalGaleriPages) % totalGaleriPages;
+  currentActiveGaleriPage = clamped;
+
+  const track = document.getElementById('galeriSliderTrack');
+  if (track) {
+    track.style.transform = 'translate3d(-' + (clamped * 100) + '%, 0, 0)';
+  }
+
+  const dots = document.querySelectorAll('.galeri-page-dot');
+  dots.forEach(function (dot, idx) {
+    if (idx === clamped) {
+      dot.classList.add('active');
+    } else {
+      dot.classList.remove('active');
+    }
+  });
+}
+
+function prevGaleriPage() {
+  slideGaleriToPage(currentActiveGaleriPage - 1);
+}
+
+function nextGaleriPage() {
+  slideGaleriToPage(currentActiveGaleriPage + 1);
+}
+
+/**
+ * Membuka modal Lightbox untuk melihat foto dokumentasi Galeri secara penuh
+ * @param {number} itemIdx - Indeks item pada cachedGaleriList
+ */
+function openGaleriPreviewModal(itemIdx) {
+  if (!cachedGaleriList || !cachedGaleriList[itemIdx]) return;
+  const item = cachedGaleriList[itemIdx];
+  if (!item.foto_url) return;
+
+  const modal = document.getElementById('modalGaleriPreview');
+  const elImg = document.getElementById('galeriPreviewImg');
+  const elBadge = document.getElementById('galeriPreviewSlotBadge');
+  const elTitle = document.getElementById('galeriPreviewTitle');
+  const elDesc = document.getElementById('galeriPreviewDesc');
+
+  const formattedUrl = (window.VotingAPI && typeof window.VotingAPI.formatImageUrl === 'function')
+    ? window.VotingAPI.formatImageUrl(item.foto_url)
+    : item.foto_url;
+
+  if (elImg) elImg.src = formattedUrl;
+  if (elBadge) elBadge.textContent = item.posisi_slot ? ('GALERI • ' + item.posisi_slot) : ('GALERI #' + (itemIdx + 1));
+  if (elTitle) elTitle.textContent = item.judul || ('Dokumentasi Pemilihan #' + (itemIdx + 1));
+  if (elDesc) elDesc.textContent = item.keterangan || '';
+
+  if (modal) {
+    modal.classList.add('open');
+  }
+}
+
+/**
+ * Menutup modal Lightbox Galeri
+ */
+function closeGaleriPreviewModal() {
+  const modal = document.getElementById('modalGaleriPreview');
+  if (modal) {
+    modal.classList.remove('open');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -934,8 +1179,9 @@ document.addEventListener('DOMContentLoaded', function () {
     window.QuickCountVisualizer.refreshData();
   }
 
-  // 6. Muat dan render data Paslon dari Spreadsheet ke Beranda secara dinamis
+  // 6. Muat dan render data Paslon serta Galeri dari Spreadsheet ke Beranda secara dinamis
   loadHomeCandidates();
+  loadHomeGaleri();
 });
 
 /**
@@ -966,7 +1212,15 @@ window.App = {
   closeVisiMisiModal: closeVisiMisiModal,
   switchVisiMisiTab: switchVisiMisiTab,
   loadHomeCandidates: loadHomeCandidates,
+  loadHomeGaleri: loadHomeGaleri,
+  slideGaleriToPage: slideGaleriToPage,
+  prevGaleriPage: prevGaleriPage,
+  nextGaleriPage: nextGaleriPage,
+  openGaleriPreviewModal: openGaleriPreviewModal,
+  closeGaleriPreviewModal: closeGaleriPreviewModal,
   selectHomeCandidate: selectHomeCandidate,
+  showInlineOrasiVideo: showInlineOrasiVideo,
+  showInlineVisiMisi: showInlineVisiMisi,
   closeHomeCandidateDetail: closeHomeCandidateDetail,
   animateNavOnSectionChange: animateNavOnSectionChange
 };

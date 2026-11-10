@@ -3,41 +3,34 @@
  * E-VOTING OSIS SMAN 1 PONTIANAK - QUICK COUNT VISUALIZER ENGINE
  * File: js/quickcount.js
  * Developer: ZianBOT by zianxy
- * Deskripsi: Render Donut Chart SVG 4 Warna (P1, P2, P3, Belum Memilih),
- *            Kalkulasi busur lingkaran anonim, & sinkronisasi data DPT.
+ * Deskripsi: Render Donut Chart SVG 4 Warna Sesuai Referensi (Paslon ? & Golput),
+ *            Logo E-Voting di Tengah, & Rotasi Warna Anonim Setiap 5 Menit.
  * ============================================================================
  */
 
-// Konstanta dimensi dan geometri SVG Donut Chart
+// Konstanta dimensi dan geometri SVG Donut Chart (viewBox 560 x 400)
 const DONUT_CONFIG = {
-  VIEW_SIZE: 220,                  // Dimensi viewBox (220 x 220)
-  CENTER_COORD: 110,               // Koordinat titik tengah (cx, cy)
-  RADIUS: 86,                      // Radius lingkaran donut (ruang tengah lebih lega)
-  STROKE_WIDTH: 22,                // Ketebalan segmen donat
+  VIEW_WIDTH: 560,
+  VIEW_HEIGHT: 400,
+  CENTER_X: 280,
+  CENTER_Y: 200,
+  RADIUS: 110,                     // Radius tengah cincin donat (inner=74, outer=146)
+  STROKE_WIDTH: 72,                // Ketebalan cincin donat sesuai referensi
+  LABEL_RADIUS_X: 194,             // Jarak horizontal label luar dari titik pusat
+  LABEL_RADIUS_Y: 174,             // Jarak vertikal label luar dari titik pusat
   POLL_INTERVAL_MS: 20000,         // Interval polling data (20 detik)
   COLOR_ROTATE_INTERVAL_MS: 300000 // Interval pengacakan warna anonim (5 menit = 300.000 ms)
 };
 
-// Keliling lingkaran: C = 2 * PI * R (2 * 3.14159265 * 70 ≈ 439.82)
+// Keliling lingkaran: C = 2 * PI * R
 const DONUT_CIRCUMFERENCE = 2 * Math.PI * DONUT_CONFIG.RADIUS;
 
-// Koleksi warna cerah kontras tinggi untuk pengacakan otomatis setiap 5 menit
+// Palet warna biru-es kontras sesuai desain referensi (diacak setiap 5 menit untuk anonimitas)
 const ANONIM_COLOR_POOL = [
-  '#ec4899', // Pink Magenta
-  '#8b5cf6', // Violet Ungu
-  '#10b981', // Hijau Emerald
-  '#f59e0b', // Kuning Amber
-  '#ef4444', // Merah Coral
-  '#06b6d4', // Cyan Turquoise
-  '#f97316', // Oranye Terang
-  '#a855f7', // Ungu Elektrik
-  '#22c55e', // Hijau Neon
-  '#eab308', // Emas Cerah
-  '#6366f1', // Indigo
-  '#14b8a6', // Teal
-  '#f43f5e', // Rose
-  '#84cc16', // Lime
-  '#38bdf8'  // Sky Cerah
+  '#3b73ac', // Steel Blue (Referensi Kanan)
+  '#125b88', // Deep Ocean Blue (Referensi Bawah)
+  '#1f97dc', // Cerulean Blue (Referensi Kiri Bawah)
+  '#c6f1ff'  // Icy Light Cyan (Referensi Kiri Atas)
 ];
 
 // State internal visualizer
@@ -47,6 +40,7 @@ let colorRotationIntervalInstance = null;
 let lastQuickCountData = null;
 let activeColorMap = {};
 let activePaslonOrder = [];
+let activeDonutSegmentIndex = -1;
 
 /**
  * Mengacak array menggunakan algoritma Fisher-Yates
@@ -121,8 +115,6 @@ async function refreshData() {
     if (result && Array.isArray(result.segments)) {
       lastQuickCountData = result;
       renderDonutChart(result);
-      renderLegend(result);
-      updateSummaryMetrics(result);
     } else {
       console.warn('[QuickCount] Format data respon tidak dikenali.');
     }
@@ -134,14 +126,12 @@ async function refreshData() {
 }
 
 /**
- * Merender segmen Donut Chart SVG 4 Warna dengan warna acak yang berganti setiap 5 menit
+ * Merender Donut Chart SVG 4 Warna beserta label luar ("Paslon ?" dan "Golput")
+ * persis seperti gambar referensi.
  * @param {Object} data - Objek rekap data quick count dari API
  */
 function renderDonutChart(data) {
   const svgElement = document.getElementById('donutSvgChart');
-  const percentLabel = document.getElementById('donutCenterPercent');
-  const subtitleLabel = document.getElementById('donutCenterSubtitle');
-
   if (!svgElement) return;
 
   if (!activeColorMap || !activeColorMap.paslon_1) {
@@ -169,146 +159,155 @@ function renderDonutChart(data) {
     }
   });
 
-  // Urutkan segmen paslon berdasarkan urutan acak 5-menitan agar posisi busur juga anonim
+  // Urutkan segmen paslon berdasarkan urutan acak 5-menitan
   paslonSegments.sort(function (a, b) {
     return activePaslonOrder.indexOf(a.key) - activePaslonOrder.indexOf(b.key);
   });
 
+  // Susun segmen searah jarum jam mulai dari atas (12 o'clock): 3 Paslon diikuti Golput
   const segments = paslonSegments.concat(otherSegments);
-  let accumulatedOffset = 0;
-  let svgContent = '';
 
-  // Bangun elemen circle SVG untuk setiap segmen warna
+  // Hitung total persentase untuk normalisasi busur lingkaran penuh
+  let totalPercent = 0;
+  segments.forEach(function (seg) {
+    totalPercent += Math.max(0, parseFloat(seg.persentase) || 0);
+  });
+  if (totalPercent <= 0) {
+    totalPercent = 100;
+  }
+
+  let accumulatedRatio = 0;
+  let circlesHtml = '';
+  const labelItems = [];
+
   segments.forEach(function (segment, index) {
-    const percentage = Math.max(0, parseFloat(segment.persentase) || 0);
-    const strokeDash = (percentage / 100) * DONUT_CIRCUMFERENCE;
-    const currentOffset = -accumulatedOffset;
+    const rawPct = Math.max(0, parseFloat(segment.persentase) || 0);
+    const ratio = rawPct / totalPercent;
+    const strokeDash = ratio * DONUT_CIRCUMFERENCE;
+    const currentOffset = -(accumulatedRatio * DONUT_CIRCUMFERENCE);
 
     const isBelumMemilih = Boolean(segment.isBelumMemilih);
-    const displayLabel = isBelumMemilih ? 'Belum Memilih' : 'Anonim';
+    const displayLabel = isBelumMemilih ? 'Golput' : 'Paslon ?';
+    const formattedPct = Number(rawPct.toFixed(1)) + '%';
 
-    let segmentHtml = '';
-    segmentHtml += '<circle ';
-    segmentHtml += '  class="donut-segment" ';
-    segmentHtml += '  id="donut-segment-' + index + '" ';
-    segmentHtml += '  cx="' + DONUT_CONFIG.CENTER_COORD + '" ';
-    segmentHtml += '  cy="' + DONUT_CONFIG.CENTER_COORD + '" ';
-    segmentHtml += '  r="' + DONUT_CONFIG.RADIUS + '" ';
-    segmentHtml += '  stroke="' + segment.color + '" ';
-    segmentHtml += '  stroke-dasharray="' + strokeDash.toFixed(2) + ' ' + DONUT_CIRCUMFERENCE.toFixed(2) + '" ';
-    segmentHtml += '  stroke-dashoffset="' + currentOffset.toFixed(2) + '" ';
-    segmentHtml += '  data-label="' + displayLabel + '" ';
-    segmentHtml += '  data-percent="' + percentage.toFixed(1) + '%" ';
-    segmentHtml += '  data-is-belum="' + (isBelumMemilih ? 'true' : 'false') + '" ';
-    segmentHtml += '  role="button" ';
-    segmentHtml += '  tabindex="0" ';
-    segmentHtml += '  aria-label="' + displayLabel + ': ' + percentage.toFixed(1) + '%" ';
-    segmentHtml += '/>';
+    circlesHtml += '<circle ';
+    circlesHtml += '  class="donut-segment" ';
+    circlesHtml += '  id="donut-segment-' + index + '" ';
+    circlesHtml += '  cx="' + DONUT_CONFIG.CENTER_X + '" ';
+    circlesHtml += '  cy="' + DONUT_CONFIG.CENTER_Y + '" ';
+    circlesHtml += '  r="' + DONUT_CONFIG.RADIUS + '" ';
+    circlesHtml += '  transform="rotate(-90 ' + DONUT_CONFIG.CENTER_X + ' ' + DONUT_CONFIG.CENTER_Y + ')" ';
+    circlesHtml += '  stroke="' + segment.color + '" ';
+    circlesHtml += '  stroke-dasharray="' + strokeDash.toFixed(2) + ' ' + DONUT_CIRCUMFERENCE.toFixed(2) + '" ';
+    circlesHtml += '  stroke-dashoffset="' + currentOffset.toFixed(2) + '" ';
+    circlesHtml += '  data-label="' + displayLabel + '" ';
+    circlesHtml += '  data-percent="' + formattedPct + '" ';
+    circlesHtml += '  role="button" ';
+    circlesHtml += '  tabindex="0" ';
+    circlesHtml += '  aria-label="' + displayLabel + ': ' + formattedPct + '" ';
+    circlesHtml += '/>';
 
-    svgContent += segmentHtml;
-    accumulatedOffset += strokeDash;
+    if (rawPct > 0) {
+      const midRatio = accumulatedRatio + (ratio / 2);
+      // Sudut dalam radian (-PI/2 adalah titik 12 o'clock / atas)
+      const angleRad = (midRatio * 2 * Math.PI) - (Math.PI / 2);
+      labelItems.push({
+        index: index,
+        label: displayLabel,
+        percentText: formattedPct,
+        angle: angleRad,
+        ratio: ratio
+      });
+    }
+
+    accumulatedRatio += ratio;
   });
 
-  svgElement.innerHTML = svgContent;
+  // Hindari tabrakan posisi label luar jika ada segmen kecil yang berdekatan
+  const minAngleGap = 0.36; // ~20 derajat
+  for (let i = 1; i < labelItems.length; i++) {
+    if (labelItems[i].angle - labelItems[i - 1].angle < minAngleGap) {
+      labelItems[i].angle = labelItems[i - 1].angle + minAngleGap;
+    }
+  }
 
-  // Pasang listener interaksi kursor & sentuhan
+  let labelsHtml = '';
+  labelItems.forEach(function (item) {
+    const lx = DONUT_CONFIG.CENTER_X + Math.cos(item.angle) * DONUT_CONFIG.LABEL_RADIUS_X;
+    const ly = DONUT_CONFIG.CENTER_Y + Math.sin(item.angle) * DONUT_CONFIG.LABEL_RADIUS_Y;
+
+    labelsHtml += '<text class="qc-external-label" id="qc-label-' + item.index + '" x="' + lx.toFixed(1) + '" y="' + (ly - 7).toFixed(1) + '">';
+    labelsHtml += '  <tspan x="' + lx.toFixed(1) + '" dy="0">' + item.label + '</tspan>';
+    labelsHtml += '  <tspan x="' + lx.toFixed(1) + '" dy="20">' + item.percentText + '</tspan>';
+    labelsHtml += '</text>';
+  });
+
+  svgElement.innerHTML = circlesHtml + labelsHtml;
+
+  // Pasang interaksi sorotan segmen saat disentuh/hover
   attachDonutSegmentListeners(segments);
-
-  // Tampilkan persentase partisipasi di lingkaran tengah sebagai default
-  if (percentLabel) {
-    percentLabel.textContent = (data.persentase_partisipasi || 0) + '%';
-  }
-  if (subtitleLabel) {
-    subtitleLabel.textContent = 'Partisipasi';
-    subtitleLabel.style.color = '#ffffff';
-    subtitleLabel.style.borderColor = 'rgba(255, 255, 255, 0.35)';
-  }
 }
 
-let activeDonutSegmentIndex = -1;
-
 /**
- * Memasang event interaktif hover dan sentuhan (touch/click) pada segmen diagram donat:
- * - Warna Paslon -> Keterangan: "Anonim"
- * - Segmen Belum Memilih -> Keterangan: "Belum Memilih"
- * - Default saat dilepas -> "Partisipasi"
+ * Memasang event interaktif hover dan sentuhan (touch/click) pada segmen diagram donat
  * @param {Array} segments - Array data segmen
  */
 function attachDonutSegmentListeners(segments) {
-  const percentLabel = document.getElementById('donutCenterPercent');
-  const subtitleLabel = document.getElementById('donutCenterSubtitle');
   const svgElement = document.getElementById('donutSvgChart');
 
-  function showSegmentDetails(seg, index) {
+  function highlightSegment(index) {
     activeDonutSegmentIndex = index;
-    const isBelumMemilih = Boolean(seg.isBelumMemilih || seg.key === 'belum_memilih');
-    const labelText = isBelumMemilih ? 'Belum Memilih' : 'Anonim';
-
-    if (percentLabel) {
-      percentLabel.textContent = (seg.persentase || 0) + '%';
-    }
-    if (subtitleLabel) {
-      subtitleLabel.textContent = labelText;
-      subtitleLabel.style.color = '#ffffff';
-      subtitleLabel.style.borderColor = seg.color;
-    }
-
-    // Sorot segmen aktif dan redupkan segmen lainnya
     segments.forEach(function (_, i) {
       const circleEl = document.getElementById('donut-segment-' + i);
+      const labelEl = document.getElementById('qc-label-' + i);
       if (circleEl) {
         if (i === index) {
           circleEl.classList.add('active-segment');
           circleEl.style.opacity = '1';
         } else {
           circleEl.classList.remove('active-segment');
-          circleEl.style.opacity = '0.55';
+          circleEl.style.opacity = '0.68';
         }
+      }
+      if (labelEl) {
+        labelEl.style.opacity = (i === index) ? '1' : '0.65';
       }
     });
   }
 
   function resetToDefault() {
     activeDonutSegmentIndex = -1;
-    if (lastQuickCountData) {
-      if (percentLabel) {
-        percentLabel.textContent = (lastQuickCountData.persentase_partisipasi || 0) + '%';
-      }
-      if (subtitleLabel) {
-        subtitleLabel.textContent = 'Partisipasi';
-        subtitleLabel.style.color = '#ffffff';
-        subtitleLabel.style.borderColor = 'rgba(255, 255, 255, 0.35)';
-      }
-    }
     segments.forEach(function (_, i) {
       const circleEl = document.getElementById('donut-segment-' + i);
+      const labelEl = document.getElementById('qc-label-' + i);
       if (circleEl) {
         circleEl.classList.remove('active-segment');
         circleEl.style.opacity = '1';
       }
+      if (labelEl) {
+        labelEl.style.opacity = '1';
+      }
     });
   }
 
-  segments.forEach(function (seg, index) {
+  segments.forEach(function (_, index) {
     const circle = document.getElementById('donut-segment-' + index);
     if (!circle) return;
 
-    // Hover Desktop
     circle.addEventListener('mouseenter', function () {
-      showSegmentDetails(seg, index);
+      highlightSegment(index);
     });
 
     circle.addEventListener('mouseleave', function () {
       resetToDefault();
     });
 
-    // Touch / Click (Tablet, HP, Desktop Click)
     circle.addEventListener('click', function (e) {
       e.stopPropagation();
       if (activeDonutSegmentIndex === index) {
         resetToDefault();
       } else {
-        showSegmentDetails(seg, index);
+        highlightSegment(index);
       }
     });
 
@@ -317,12 +316,11 @@ function attachDonutSegmentListeners(segments) {
       if (activeDonutSegmentIndex === index) {
         resetToDefault();
       } else {
-        showSegmentDetails(seg, index);
+        highlightSegment(index);
       }
     }, { passive: true });
   });
 
-  // Tap di luar diagram mengembalikan ke tampilan Partisipasi
   if (svgElement) {
     document.addEventListener('click', function (e) {
       if (!svgElement.contains(e.target) && activeDonutSegmentIndex !== -1) {
@@ -333,63 +331,11 @@ function attachDonutSegmentListeners(segments) {
 }
 
 /**
- * Legenda luar ditiadakan sesuai preferensi tampilan diagram pie murni anonim
- * @param {Object} data - Objek rekap data quick count
- */
-function renderLegend(data) {
-  const container = document.getElementById('qcLegendGrid');
-  if (container) {
-    container.innerHTML = '';
-    container.style.display = 'none';
-  }
-}
-
-/**
- * Memperbarui teks waktu rekam sinkronisasi
- * @param {Object} data - Data quick count
- */
-function updateSummaryMetrics(data) {
-  const elTimestamp = document.getElementById('qcLastUpdated');
-
-  if (elTimestamp && data.updated_at) {
-    elTimestamp.textContent = 'Pembaruan: ' + data.updated_at + ' WIB';
-  }
-}
-
-/**
- * Memberikan efek visual sorotan pada kartu legenda tertentu
- * @param {string} segmentKey - Key unik segmen
- */
-function highlightLegendItem(segmentKey) {
-  resetLegendHighlights();
-  const target = document.getElementById('legend-' + segmentKey);
-  if (target) {
-    target.style.borderColor = '#ffffff';
-    target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-    target.style.transform = 'scale(1.03)';
-    target.style.transition = 'all 0.2s ease';
-  }
-}
-
-/**
- * Menghilangkan efek sorotan dari semua kartu legenda
- */
-function resetLegendHighlights() {
-  const allItems = document.querySelectorAll('.qc-legend-item');
-  allItems.forEach(function (item) {
-    item.style.borderColor = 'rgba(255, 255, 255, 0.22)';
-    item.style.backgroundColor = 'rgba(0, 20, 50, 0.16)';
-    item.style.transform = 'none';
-  });
-}
-
-/**
  * Memulai interval polling data berkala
  */
 function startAutoPolling() {
   stopAutoPolling();
   pollingIntervalInstance = setInterval(function () {
-    // Hanya lakukan refresh jika halaman beranda sedang tampak
     const homeView = document.getElementById('view-home');
     const isHomeVisible = homeView && homeView.classList.contains('active');
     if (isHomeVisible) {

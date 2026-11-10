@@ -9,10 +9,10 @@
   <meta property="og:title" content="E-Voting OSIS SMAN 1 Pontianak - Single Page Application">
   <meta property="og:description" content="Aplikasi E-Voting Pemilihan Ketua dan Wakil Ketua OSIS SMAN 1 Pontianak periode 2026/2027.">
 
-  <!-- Google Fonts: Serif Elegan & Sans-Serif Modern -->
+  <!-- Google Fonts: Script Kaligrafi, Serif Elegan, & Monospace Geometris -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&family=Great+Vibes&family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
   <!-- Master Modular Stylesheets (zianxy Architecture) -->
   <link rel="stylesheet" href="css/base.css">
@@ -26,7 +26,7 @@
   <main class="spa-app" id="spaApp">
 
     <!-- ======================================================================
-         VIEW 1: HOME PAGE (SCROLL SNAP 6 SECTION FULLSCREEN 100VH)
+         VIEW 1: HOME PAGE (SCROLL SNAP 4 SECTION FULLSCREEN 100VH)
          ====================================================================== -->
     <section class="spa-view active" id="view-home">
 
@@ -36,6 +36,7 @@
         <button type="button" class="dot-item" data-index="1" data-label="Kandidat Paslon" onclick="window.App.goToSection(1)"></button>
         <button type="button" class="dot-item" data-index="2" data-label="Orasi Paslon" onclick="window.App.goToSection(2)"></button>
         <button type="button" class="dot-item" data-index="3" data-label="Quick Count &amp; Bilik" onclick="window.App.goToSection(3)"></button>
+        <button type="button" class="dot-item" data-index="4" data-label="Galeri" onclick="window.App.goToSection(4)"></button>
       </nav>
 
       <!-- Scroll Snap Container -->
@@ -43,9 +44,17 @@
 
         <!-- SECTION 0: HERO HEADER UTAMA -->
         <header class="snap-section section-hero" id="sec-0">
-          <div class="crystal-overlay">
-            <div class="shard shard-tl"></div>
-            <div class="shard shard-tr"></div>
+          <!-- Ornamen Kristal Segitiga Sesuai Referensi -->
+          <div class="crystal-overlay" aria-hidden="true">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-1">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-2">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-3">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-4">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-5">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-6">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-7">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-8">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset hero-crystal-9">
           </div>
 
           <nav class="section-nav" id="homeBrandNav">
@@ -68,25 +77,22 @@
           </nav>
 
           <div class="hero-content">
-            <h1 class="title-pemilihan">PEMILIHAN</h1>
-            <h2 class="title-sub">KETUA &amp; WAKIL KETUA</h2>
+            <h1 class="title-pemilihan"><span class="script-initial">P</span>EMILIHAN</h1>
+            <h2 class="title-sub"><span class="highlight-gold">KETUA</span> &amp; <span class="highlight-gold">WAKIL</span> KETUA</h2>
             <h2 class="title-osis">OSIS</h2>
-            <div class="school-badge">SMAN 1 PONTIANAK &bull; PERIODE 2026/2027</div>
-          </div>
-
-          <div class="hero-footer-hint" onclick="window.App.goToSection(1)">
-            <span class="hint-text">Gulir untuk Melihat Paslon</span>
-            <svg class="hint-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
           </div>
         </header>
 
         <!-- SECTION 1: PROFIL 3 PASLON -->
-        <section class="snap-section" id="sec-1">
-          <div class="crystal-overlay">
-            <div class="shard shard-tl"></div>
-            <div class="shard shard-br"></div>
+        <section class="snap-section section-paslon" id="sec-1">
+          <!-- Ornamen Kristal Segitiga Sesuai Referensi -->
+          <div class="crystal-overlay" aria-hidden="true">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset paslon-crystal-1">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset paslon-crystal-2">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset paslon-crystal-3">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset paslon-crystal-4">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset paslon-crystal-5">
+            <img src="/public/assets/aistudio/E-VOTING_2026__1__4849e780.png" alt="" class="crystal-asset paslon-crystal-6">
           </div>
 
           <!-- Subjudul Interaktif: Sentuh/Klik untuk Membaca Visi & Misi Paslon -->
@@ -139,19 +145,10 @@
             <!-- Kontainer Inline Detail & Slider Visi Misi yang Otomatis Bergeser Saat Paslon Dipilih -->
             <div class="inline-detail-container" id="inlineDetailContainer" style="display: none;" aria-live="polite"></div>
           </div>
-
-          <div class="section-footer-note" id="paslonSectionFooterNote">
-            Sentuh kartu untuk membaca visi-misi atau gulir ke bawah untuk menyaksikan video orasi
-          </div>
         </section>
 
         <!-- SECTION 2: BAGIAN ORASI PASLON 1 - 3 (GESER KE SAMPING / HORIZONTAL SLIDER SMOOTH) -->
-        <section class="snap-section" id="sec-2">
-          <div class="crystal-overlay">
-            <div class="shard shard-tr"></div>
-            <div class="shard shard-bl"></div>
-          </div>
-
+        <section class="snap-section section-orasi" id="sec-2">
           <!-- Navigasi Tab/Indikator Paslon Orasi -->
           <div class="orasi-header-tabs" role="tablist" aria-label="Pilih Orasi Paslon">
             <button type="button" class="orasi-tab-pill active" data-orasi-index="0" onclick="window.App.slideOrasiTo(0)">
@@ -191,13 +188,15 @@
                           allowfullscreen>
                         </iframe>
                         <div class="tv-touch-shield" data-shield-index="0" aria-label="Geser ke samping untuk pindah paslon atau ketuk untuk memutar video"></div>
-                        <div class="tv-led"></div>
+                      </div>
+                      <div class="tv-indicators" aria-hidden="true">
+                        <span class="tv-led-dim"></span>
+                        <span class="tv-led"></span>
                       </div>
                     </div>
                     <div class="btn-orasi-capsule" onclick="window.App.openVisiMisiModal(0)">
-                      <span class="sparkle-icon sparkle-tl">&#10022;</span>
+                      <span class="orasi-star-flare" aria-hidden="true"></span>
                       <span class="btn-orasi-text" id="labelOrasi1">ORASI PASLON 1</span>
-                      <span class="sparkle-icon sparkle-br">&#10022;</span>
                     </div>
                   </div>
                 </div>
@@ -216,13 +215,15 @@
                           allowfullscreen>
                         </iframe>
                         <div class="tv-touch-shield" data-shield-index="1" aria-label="Geser ke samping untuk pindah paslon atau ketuk untuk memutar video"></div>
-                        <div class="tv-led"></div>
+                      </div>
+                      <div class="tv-indicators" aria-hidden="true">
+                        <span class="tv-led-dim"></span>
+                        <span class="tv-led"></span>
                       </div>
                     </div>
                     <div class="btn-orasi-capsule" onclick="window.App.openVisiMisiModal(1)">
-                      <span class="sparkle-icon sparkle-tl">&#10022;</span>
+                      <span class="orasi-star-flare" aria-hidden="true"></span>
                       <span class="btn-orasi-text" id="labelOrasi2">ORASI PASLON 2</span>
-                      <span class="sparkle-icon sparkle-br">&#10022;</span>
                     </div>
                   </div>
                 </div>
@@ -241,13 +242,15 @@
                           allowfullscreen>
                         </iframe>
                         <div class="tv-touch-shield" data-shield-index="2" aria-label="Geser ke samping untuk pindah paslon atau ketuk untuk memutar video"></div>
-                        <div class="tv-led"></div>
+                      </div>
+                      <div class="tv-indicators" aria-hidden="true">
+                        <span class="tv-led-dim"></span>
+                        <span class="tv-led"></span>
                       </div>
                     </div>
                     <div class="btn-orasi-capsule" onclick="window.App.openVisiMisiModal(2)">
-                      <span class="sparkle-icon sparkle-tl">&#10022;</span>
+                      <span class="orasi-star-flare" aria-hidden="true"></span>
                       <span class="btn-orasi-text" id="labelOrasi3">ORASI PASLON 3</span>
-                      <span class="sparkle-icon sparkle-br">&#10022;</span>
                     </div>
                   </div>
                 </div>
@@ -263,64 +266,87 @@
             </button>
           </div>
 
-          <!-- Indikator Swipe & Titik Navigasi Geser Samping -->
+          <!-- Indikator Swipe & Panduan Geser Samping -->
           <div class="orasi-swipe-bar">
             <div class="orasi-swipe-dots" role="tablist" aria-label="Indikator Slide Orasi">
               <button type="button" class="orasi-swipe-dot active" data-orasi-dot="0" aria-label="Slide Paslon 1" onclick="window.App.slideOrasiTo(0)"></button>
               <button type="button" class="orasi-swipe-dot" data-orasi-dot="1" aria-label="Slide Paslon 2" onclick="window.App.slideOrasiTo(1)"></button>
               <button type="button" class="orasi-swipe-dot" data-orasi-dot="2" aria-label="Slide Paslon 3" onclick="window.App.slideOrasiTo(2)"></button>
             </div>
-            <div class="section-footer-note" id="orasiSectionFooterNote">
-              SMAN 1 Pontianak &bull; Orasi Visi &amp; Misi Paslon Nomor Urut 01 &mdash; Geser ke samping untuk paslon lainnya
-            </div>
+            <span class="orasi-swipe-hint-text">&#8592; Geser ke samping untuk melihat orasi paslon lainnya &#8594;</span>
           </div>
         </section>
 
         <!-- SECTION 3: REAL-TIME QUICK COUNT & TOMBOL MASUK BILIK -->
-        <section class="snap-section" id="sec-3">
-          <div class="crystal-overlay">
-            <div class="shard shard-tl"></div>
-            <div class="shard shard-tr"></div>
-          </div>
-
+        <section class="snap-section section-qc" id="sec-3">
           <div class="qc-stage">
-            <!-- Kartu Panel Quick Count Anonim -->
-            <div class="qc-card">
-              <div class="qc-header">
-                <div class="qc-header-text">
-                  <h3 class="qc-title">REAL-TIME QUICK COUNT</h3>
-                  <div class="qc-subtitle-time" id="qcLastUpdated">
-                    Memuat data sinkronisasi...
-                  </div>
-                </div>
-                <span class="qc-badge-anonim">Anonim</span>
-              </div>
+            <h2 class="qc-main-heading">QUICK COUNT</h2>
 
-              <div class="qc-donut-layout">
-                <!-- SVG Donut Chart 4 Warna Tanpa Keterangan Paslon Luar -->
-                <div class="donut-chart-container">
-                  <svg class="donut-svg" viewBox="0 0 220 220" id="donutSvgChart">
-                    <!-- Segmen Donut di-render dinamis oleh js/quickcount.js -->
-                  </svg>
-                  <div class="donut-center-info">
-                    <span class="donut-center-percent" id="donutCenterPercent">0%</span>
-                    <span class="donut-center-label" id="donutCenterSubtitle">Partisipasi</span>
-                  </div>
-                </div>
+            <div class="qc-donut-layout">
+              <div class="donut-chart-container">
+                <svg class="donut-svg" viewBox="0 0 560 400" id="donutSvgChart">
+                  <!-- Segmen Donut & Label Luar (Golput / Paslon ?) di-render dinamis oleh js/quickcount.js -->
+                </svg>
 
-                <div class="qc-chart-hint" id="qcChartHint">
-                  <span class="hint-sparkle">&#10022;</span> Sentuh warna diagram untuk melihat rincian anonim
-                </div>
+                <!-- Lingkaran Tengah Berisi Aset Gambar Logo E-Voting (Klik untuk Masuk Bilik Suara) -->
+                <button type="button" class="donut-center-logo-ring" onclick="window.App.openLoginModal()" title="Klik untuk Masuk Bilik Suara">
+                  <span class="donut-center-white-disc">
+                    <img 
+                      src="assets/images/e-voting.png" 
+                      onerror="this.src='https://raw.githubusercontent.com/fauziopa/e-voting/main/assets/images/e-voting.png';" 
+                      alt="Logo E-Voting" 
+                      class="donut-center-evoting-img"
+                    >
+                  </span>
+                </button>
               </div>
             </div>
 
-            <!-- Tombol Utama Pintu Masuk Bilik Suara -->
+            <!-- Tombol Masuk Bilik Suara -->
             <button type="button" class="btn-bilik-suara" onclick="window.App.openLoginModal()">
               <span>MASUK BILIK SUARA</span>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </button>
+          </div>
+        </section>
+
+        <!-- SECTION 4: GALERI DOKUMENTASI (DESAIN PERSIS REFERENSI 5-SLOT BENTO GRID) -->
+        <section class="snap-section section-galeri" id="sec-4">
+          <div class="galeri-stage">
+            <h2 class="galeri-main-heading">GALERI</h2>
+
+            <div class="galeri-carousel-wrapper" id="galeriCarouselWrapper">
+              <button type="button" class="galeri-nav-arrow prev" id="btnGaleriPrev" style="display: none;" aria-label="Halaman Galeri Sebelumnya" onclick="window.App.prevGaleriPage()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+
+              <div class="galeri-viewport" id="galeriViewport">
+                <div class="galeri-track" id="galeriSliderTrack">
+                  <!-- Default 5-Slot Bento Grid sesuai referensi (di-render & disinkronkan dari Sheet "galeri" via js/app.js) -->
+                  <div class="galeri-page active-page" data-galeri-page="0">
+                    <div class="galeri-bento-grid" id="galeriBentoGrid">
+                      <article class="galeri-card galeri-slot-1" data-slot="1"></article>
+                      <article class="galeri-card galeri-slot-2" data-slot="2"></article>
+                      <article class="galeri-card galeri-slot-3" data-slot="3"></article>
+                      <article class="galeri-card galeri-slot-4" data-slot="4"></article>
+                      <article class="galeri-card galeri-slot-5" data-slot="5"></article>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button type="button" class="galeri-nav-arrow next" id="btnGaleriNext" style="display: none;" aria-label="Halaman Galeri Berikutnya" onclick="window.App.nextGaleriPage()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+
+            <div class="galeri-pagination-bar" id="galeriPaginationBar" style="display: none;"></div>
           </div>
         </section>
 
@@ -550,6 +576,23 @@
         <button type="button" class="btn-primary" style="margin-top: 18px;" onclick="window.App.closeVisiMisiModal()">
           TUTUP
         </button>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         MODAL 4: PREVIEW FOTO GALERI (LIGHTBOX DOKUMENTASI)
+         ====================================================================== -->
+    <div class="modal-overlay" id="modalGaleriPreview" role="dialog" aria-modal="true" onclick="if(event.target === this) window.App.closeGaleriPreviewModal()">
+      <div class="modal-card modal-galeri-card">
+        <button type="button" class="modal-close-btn" aria-label="Tutup" onclick="window.App.closeGaleriPreviewModal()">&times;</button>
+        <div class="galeri-preview-frame">
+          <img id="galeriPreviewImg" src="" alt="Preview Dokumentasi Galeri" referrerpolicy="no-referrer">
+        </div>
+        <div class="galeri-preview-meta">
+          <span class="galeri-preview-badge" id="galeriPreviewSlotBadge">GALERI OSIS</span>
+          <h3 class="galeri-preview-title" id="galeriPreviewTitle">Judul Dokumentasi</h3>
+          <p class="galeri-preview-desc" id="galeriPreviewDesc"></p>
+        </div>
       </div>
     </div>
 

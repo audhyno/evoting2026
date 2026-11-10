@@ -51,7 +51,7 @@
 }
 
 .subjudul-text {
-  font-family: var(--font-serif-sub);
+  font-family: 'Cinzel', serif;
   font-size: clamp(0.92rem, 1.35vw, 1.15rem);
   font-weight: 800;
   letter-spacing: 3px;
@@ -142,7 +142,7 @@
   height: 100%;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: center top; /* Mengunci titik fokus pada kepala & jas paslon */
+  object-position: center top;
   display: block;
   transform: scale(1);
   transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
@@ -168,7 +168,7 @@
 }
 
 .card-label {
-  font-family: var(--font-serif-sub);
+  font-family: 'Cinzel', serif;
   font-size: clamp(1.1rem, 1.6vw, 1.35rem);
   font-weight: 800;
   letter-spacing: 2.5px;
@@ -323,7 +323,7 @@
 }
 
 /* ==========================================================================
-   HORIZONTAL ORASI SLIDER (PASLON 1 - 3 GESER KE SAMPING SMOOTH)
+   HORIZONTAL ORASI SLIDER (DESAIN PERSIS REFERENSI MONITOR TV & KAPSUL GLOW)
    ========================================================================== */
 
 .orasi-header-tabs {
@@ -340,13 +340,14 @@
   border-radius: 30px;
   box-shadow: 0 8px 24px rgba(0, 35, 75, 0.25);
   flex-shrink: 0;
+  margin-bottom: 6px;
 }
 
 .orasi-tab-pill {
   border: none;
   background: transparent;
   color: rgba(255, 255, 255, 0.8);
-  font-family: var(--font-serif-sub);
+  font-family: 'Cinzel', serif;
   font-size: clamp(0.75rem, 1.1vw, 0.88rem);
   font-weight: 800;
   letter-spacing: 2px;
@@ -371,7 +372,7 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1080px;
+  max-width: 1120px;
   margin: auto 0;
   display: flex;
   align-items: center;
@@ -379,12 +380,43 @@
   gap: 12px;
 }
 
+.orasi-nav-arrow {
+  position: relative;
+  z-index: 5;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 35, 75, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.orasi-nav-arrow:hover {
+  background: #ffffff;
+  color: #026bb0;
+  transform: scale(1.1);
+  box-shadow: 0 12px 28px rgba(0, 45, 95, 0.4), 0 0 20px rgba(255, 255, 255, 0.75);
+}
+
+.orasi-nav-arrow:active {
+  transform: scale(0.95);
+}
+
 .orasi-slider-viewport {
   width: 100%;
-  max-width: 860px;
+  max-width: 880px;
   overflow: hidden;
   position: relative;
-  padding: 14px 0;
+  padding: 12px 0 18px 0;
   touch-action: pan-y pinch-zoom;
   cursor: grab;
   user-select: none;
@@ -417,43 +449,12 @@
   padding: 0 12px;
   opacity: 0.35;
   transform: scale(0.92);
-  transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.68s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .orasi-slide.active-slide {
   opacity: 1;
   transform: scale(1);
-}
-
-.orasi-nav-arrow {
-  position: relative;
-  z-index: 5;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.65);
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  box-shadow: 0 8px 24px rgba(0, 35, 75, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.6);
-  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.orasi-nav-arrow:hover {
-  background: #ffffff;
-  color: #026bb0;
-  transform: scale(1.1);
-  box-shadow: 0 12px 28px rgba(0, 45, 95, 0.4), 0 0 20px rgba(255, 255, 255, 0.75);
-}
-
-.orasi-nav-arrow:active {
-  transform: scale(0.95);
 }
 
 .monitor-unit {
@@ -464,41 +465,50 @@
   align-items: center;
 }
 
-/* Pendaran Cahaya Halo Samping Monitor TV */
+/* Pendaran Cahaya Putih-Biru di Belakang Samping Monitor TV Persis Referensi */
 .monitor-unit::before {
   content: '';
   position: absolute;
-  top: 15%;
-  width: 90%;
-  max-width: 780px;
-  height: 70%;
+  top: 6%;
+  width: 98%;
+  max-width: 880px;
+  height: 74%;
   background: radial-gradient(
     ellipse at center, 
-    rgba(225, 248, 255, 0.95) 0%, 
-    rgba(65, 195, 255, 0.65) 45%, 
-    rgba(2, 147, 238, 0) 75%
+    rgba(255, 255, 255, 0.98) 0%, 
+    rgba(215, 244, 255, 0.88) 42%, 
+    rgba(29, 155, 227, 0) 74%
   );
-  filter: blur(44px);
+  filter: blur(34px);
   z-index: 1;
   pointer-events: none;
 }
 
-/* Kunci Rasio TV 16:9 Presisi (Anti-Gepeng & Anti-Kepotong) */
+/* Bingkai Monitor TV Hitam Persegi Panjang Presisi */
 .tv-frame {
   position: relative;
   z-index: 2;
-  max-height: 44vh;
-  width: min(700px, calc(44vh * 16 / 9));
+  max-height: 46vh;
+  width: min(680px, calc(46vh * 16 / 9));
   aspect-ratio: 16 / 9;
-  background: #0f1216;
-  border: 8px solid #1a1e24;
-  border-bottom-width: 12px;
-  border-radius: 14px;
+  background: #0c0e10;
+  border: 11px solid #16181b;
+  border-bottom-width: 14px;
+  border-radius: 2px;
   box-shadow: 
-    0 16px 42px rgba(0, 25, 55, 0.45),
-    0 0 30px rgba(160, 230, 255, 0.4),
-    inset 0 1px 3px rgba(255, 255, 255, 0.35);
-  overflow: hidden;
+    0 18px 46px rgba(0, 30, 65, 0.42),
+    0 0 42px rgba(225, 246, 255, 0.65);
+  overflow: visible;
+}
+
+/* Garis Bezel Dalam Abu-Abu Gelap */
+.tv-frame::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 1.5px solid #32363b;
+  pointer-events: none;
+  z-index: 4;
 }
 
 .tv-screen {
@@ -506,10 +516,11 @@
   width: 100%;
   height: 100%;
   aspect-ratio: 16 / 9;
-  background: #000000;
+  background: #050607;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .tv-screen iframe {
@@ -519,81 +530,138 @@
   display: block;
 }
 
-/* Lapisan Sentuh Transparan di Atas Layar TV Agar Swipe Mobile Tidak Tertahan Iframe */
+/* Lapisan Sentuh dengan Kilau Kaca Diagonal Seperti Referensi */
 .tv-touch-shield {
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: transparent;
+  background: linear-gradient(
+    112deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 47.5%,
+    rgba(0, 0, 0, 0.18) 47.8%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
   touch-action: pan-y pinch-zoom;
   cursor: pointer;
 }
 
 .tv-touch-shield.unlocked {
   pointer-events: none;
+  background: transparent;
+}
+
+/* Dua Lampu Indikator LED di Kanan Bawah Bezel TV */
+.tv-indicators {
+  position: absolute;
+  bottom: -9px;
+  right: 18px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  pointer-events: none;
+}
+
+.tv-led-dim {
+  width: 5px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: #1f5c35;
 }
 
 .tv-led {
-  position: absolute;
-  bottom: 3px;
-  right: 12px;
-  z-index: 4;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
+  width: 7px;
+  height: 3px;
+  border-radius: 2px;
   background: #4ade80;
-  box-shadow: 0 0 6px #4ade80;
+  box-shadow: 0 0 6px #4ade80, 0 0 10px #22c55e;
 }
 
+/* Kapsul Frosted Biru Muda Bercahaya di Bawah Monitor TV */
 .btn-orasi-capsule {
   position: relative;
   z-index: 3;
-  margin-top: 14px;
+  margin-top: clamp(16px, 2.4vh, 24px);
+  min-width: min(430px, 82vw);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 38px;
-  border-radius: 40px;
+  padding: 12px 38px;
+  border-radius: 999px;
   background: linear-gradient(
     180deg, 
-    rgba(255, 255, 255, 0.72) 0%, 
-    rgba(200, 235, 255, 0.38) 50%, 
-    rgba(255, 255, 255, 0.55) 100%
+    rgba(198, 232, 252, 0.78) 0%, 
+    rgba(138, 198, 238, 0.68) 52%, 
+    rgba(190, 228, 250, 0.78) 100%
   );
-  border: 2px solid rgba(255, 255, 255, 0.9);
+  border: 3.5px solid rgba(235, 248, 255, 0.92);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   box-shadow: 
-    0 8px 24px rgba(0, 70, 130, 0.3),
-    inset 0 2px 6px rgba(255, 255, 255, 0.85),
-    0 0 22px rgba(255, 255, 255, 0.45);
+    0 10px 26px rgba(6, 62, 112, 0.32),
+    inset 0 0 18px rgba(255, 255, 255, 0.88),
+    0 0 26px rgba(215, 244, 255, 0.72);
   cursor: pointer;
   text-decoration: none;
   transition: var(--transition-smooth);
 }
 
 .btn-orasi-capsule:hover {
-  transform: scale(1.04);
-  box-shadow: 0 12px 30px rgba(0, 85, 150, 0.4), 0 0 32px rgba(255, 255, 255, 0.8);
+  transform: scale(1.03);
+  box-shadow:
+    0 14px 32px rgba(6, 62, 112, 0.4),
+    inset 0 0 22px rgba(255, 255, 255, 0.95),
+    0 0 34px rgba(255, 255, 255, 0.88);
 }
 
 .btn-orasi-text {
-  font-family: var(--font-serif-sub);
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  font-weight: 800;
-  letter-spacing: 3px;
+  font-family: var(--font-mono-display);
+  font-size: clamp(1.35rem, 2.3vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: 3.5px;
   color: #ffffff;
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 70, 120, 0.6);
+  text-shadow:
+    0 0 14px rgba(255, 255, 255, 0.96),
+    0 0 26px rgba(255, 255, 255, 0.7),
+    0 2px 5px rgba(10, 70, 125, 0.45);
 }
 
-.sparkle-icon {
+/* Kilau Bintang Emas-Putih di Sudut Kiri Atas Kapsul Orasi Persis Referensi */
+.orasi-star-flare {
   position: absolute;
-  font-size: 13px;
-  color: #ffffff;
-  line-height: 1;
+  top: -20px;
+  left: -14px;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 238, 155, 0.88) 22%, rgba(255, 220, 100, 0) 68%);
 }
-.sparkle-tl { top: 6px; left: 16px; }
-.sparkle-br { bottom: 6px; right: 16px; }
+
+.orasi-star-flare::before,
+.orasi-star-flare::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: linear-gradient(90deg, rgba(255, 235, 140, 0) 0%, rgba(255, 250, 210, 0.98) 50%, rgba(255, 235, 140, 0) 100%);
+  border-radius: 50%;
+}
+
+.orasi-star-flare::before {
+  width: 54px;
+  height: 2.5px;
+  transform: translate(-50%, -50%) rotate(-24deg);
+  box-shadow: 0 0 8px rgba(255, 240, 160, 0.9);
+}
+
+.orasi-star-flare::after {
+  width: 46px;
+  height: 2.5px;
+  transform: translate(-50%, -50%) rotate(42deg);
+  box-shadow: 0 0 8px rgba(255, 240, 160, 0.9);
+}
 
 .orasi-swipe-bar {
   position: relative;
@@ -601,8 +669,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
+  margin-top: 4px;
 }
 
 .orasi-swipe-dots {
@@ -612,7 +681,7 @@
   padding: 5px 12px;
   border-radius: 20px;
   background: rgba(0, 25, 55, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(8px);
 }
 
@@ -634,72 +703,44 @@
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }
 
+.orasi-swipe-hint-text {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 4px rgba(0, 35, 70, 0.45);
+}
+
+/* ==========================================================================
+   SECTION 3: QUICK COUNT DESAIN PERSIS REFERENSI (DENGAN LOGO E-VOTING DI TENGAH)
+   ========================================================================== */
+
 .qc-stage {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 900px;
+  max-width: 960px;
   margin: auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
+  gap: 8px;
 }
 
-.qc-card {
-  width: 100%;
-  max-width: 540px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-radius: 22px;
-  padding: 22px 26px;
-  box-shadow: 0 16px 36px rgba(0, 40, 80, 0.28);
-}
-
-.qc-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 14px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-  padding-bottom: 12px;
-}
-
-.qc-header-text {
-  min-width: 0;
-  flex: 1;
-}
-
-.qc-title {
-  font-family: var(--font-serif-sub);
-  font-size: clamp(1rem, 1.45vw, 1.25rem);
-  font-weight: 800;
-  letter-spacing: 2px;
+.qc-main-heading {
+  font-family: var(--font-mono-display);
+  font-size: clamp(2rem, 3.8vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: 5px;
   color: #ffffff;
-  line-height: 1.25;
-}
-
-.qc-subtitle-time {
-  font-size: 0.76rem;
-  color: rgba(255, 255, 255, 0.82);
-  margin-top: 4px;
-}
-
-.qc-badge-anonim {
-  background: rgba(255, 255, 255, 0.24);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 5px 14px;
-  border-radius: 20px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #ffffff;
-  white-space: nowrap;
-  flex-shrink: 0;
+  text-align: center;
+  text-shadow:
+    0 0 18px rgba(255, 255, 255, 0.95),
+    0 0 36px rgba(195, 238, 255, 0.8),
+    0 2px 8px rgba(8, 60, 110, 0.4);
+  margin-bottom: 2px;
 }
 
 .qc-donut-layout {
@@ -707,16 +748,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
   width: 100%;
 }
 
 .donut-chart-container {
   position: relative;
-  width: clamp(210px, 33vh, 250px);
-  height: clamp(210px, 33vh, 250px);
+  width: min(560px, 94vw);
+  aspect-ratio: 560 / 400;
+  max-height: 56vh;
   flex-shrink: 0;
-  margin: 4px auto;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -725,149 +766,113 @@
 .donut-svg {
   width: 100%;
   height: 100%;
-  transform: rotate(-90deg);
   overflow: visible;
 }
 
 .donut-segment {
   fill: none;
-  stroke-width: 22;
-  transition: stroke 0.85s ease, stroke-dasharray 0.65s ease, stroke-dashoffset 0.65s ease, stroke-width 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+  stroke-width: 72;
+  transition: stroke 0.75s ease, stroke-dasharray 0.65s ease, stroke-dashoffset 0.65s ease, filter 0.25s ease, opacity 0.25s ease;
   cursor: pointer;
   outline: none;
 }
 
 .donut-segment:hover,
 .donut-segment.active-segment {
-  stroke-width: 26;
-  filter: drop-shadow(0 0 8px currentColor);
+  filter: brightness(1.08) drop-shadow(0 0 12px rgba(255, 255, 255, 0.45));
 }
 
-.donut-center-info {
+.qc-external-label {
+  font-family: var(--font-mono-display);
+  font-size: 16.5px;
+  font-weight: 700;
+  fill: #ffffff;
+  text-anchor: middle;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 5px rgba(6, 48, 90, 0.45));
+}
+
+/* Lingkaran Tengah dengan Aset Gambar Logo E-Voting Persis Referensi */
+.donut-center-logo-ring {
   position: absolute;
-  width: 62%;
-  height: 62%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 39%;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
+  border: none;
+  padding: 2.8%;
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(235, 248, 255, 0.92) 0%,
+    rgba(165, 215, 246, 0.85) 65%,
+    rgba(130, 192, 234, 0.82) 100%
+  );
+  box-shadow:
+    0 4px 18px rgba(8, 58, 105, 0.28),
+    inset 0 1px 4px rgba(255, 255, 255, 0.9);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  pointer-events: none;
-  padding: 6px;
-  gap: 5px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
 }
 
-.donut-center-percent {
-  font-size: clamp(1.35rem, 2vw, 1.7rem);
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.05;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 10px rgba(0, 20, 50, 0.5);
-  max-width: 100%;
+.donut-center-logo-ring:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow:
+    0 6px 24px rgba(8, 58, 105, 0.38),
+    0 0 20px rgba(255, 255, 255, 0.65);
 }
 
-.donut-center-label {
-  font-size: clamp(0.62rem, 0.8vw, 0.72rem);
-  font-weight: 800;
-  color: #ffffff;
-  background: rgba(0, 25, 55, 0.38);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 3px 10px;
-  border-radius: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  line-height: 1.2;
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-shadow: 0 1px 3px rgba(0, 20, 50, 0.5);
-  transition: all 0.2s ease;
-}
-
-.qc-chart-hint {
-  font-size: 0.74rem;
-  color: rgba(255, 255, 255, 0.85);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(0, 20, 50, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 4px 14px;
-  border-radius: 20px;
-}
-
-.qc-chart-hint .hint-sparkle {
-  color: #fde047;
-}
-
-.qc-legend-grid {
-  display: none !important;
-}
-
-.qc-legend-item {
-  background: rgba(0, 20, 50, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 12px;
-  padding: 8px 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: var(--transition-smooth);
-}
-
-.legend-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.legend-color-dot {
-  width: 11px;
-  height: 11px;
+.donut-center-white-disc {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(10, 65, 115, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14%;
 }
 
-.legend-name {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.legend-percent {
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: #ffffff;
+.donut-center-evoting-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .btn-bilik-suara {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  background: linear-gradient(135deg, #ffffff 0%, #e2f2ff 100%);
-  color: #026bb0;
-  font-family: var(--font-serif-sub);
-  font-size: clamp(1.1rem, 1.7vw, 1.3rem);
-  font-weight: 800;
-  letter-spacing: 3px;
-  padding: 13px 40px;
-  border-radius: 40px;
-  border: 2px solid #ffffff;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-family: var(--font-mono-display);
+  font-size: clamp(0.92rem, 1.35vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  padding: 10px 28px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   box-shadow: 
-    0 15px 35px rgba(0, 50, 100, 0.35),
-    0 0 25px rgba(255, 255, 255, 0.65);
+    0 8px 24px rgba(6, 55, 100, 0.28),
+    inset 0 0 12px rgba(255, 255, 255, 0.45);
   cursor: pointer;
   transition: var(--transition-smooth);
+  margin-top: 2px;
 }
 
 .btn-bilik-suara:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 18px 42px rgba(0, 60, 120, 0.45), 0 0 35px rgba(255, 255, 255, 0.9);
-  color: #004b7e;
+  background: #ffffff;
+  color: #0b65a0;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(6, 55, 100, 0.38), 0 0 24px rgba(255, 255, 255, 0.8);
 }
 
 /* ==========================================================================
@@ -970,20 +975,20 @@
 /* Kolom Tengah: Panel Visi & Misi Kaca */
 .inline-visi-panel {
   flex: 1;
-  min-width: 320px;
-  max-width: 580px;
+  min-width: 340px;
+  max-width: 640px;
   background: rgba(255, 255, 255, 0.18);
   border: 1.5px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 20px;
-  padding: 16px 20px;
+  padding: 14px 18px;
   box-shadow: 
     0 16px 38px rgba(0, 40, 80, 0.3),
     inset 0 1px 3px rgba(255, 255, 255, 0.6);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   animation: slideInVisi 0.75s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
 }
 
@@ -999,29 +1004,53 @@
 }
 
 .visi-panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   margin-bottom: 10px;
+  flex-shrink: 0;
 }
 
-.visi-panel-title {
+.visi-header-tab {
   font-family: var(--font-serif-sub);
-  font-size: clamp(1.05rem, 1.45vw, 1.25rem);
+  font-size: clamp(0.88rem, 1.25vw, 1.08rem);
   font-weight: 800;
   letter-spacing: 2px;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 25, 60, 0.5);
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(0, 25, 55, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: 14px;
+  padding: 9px 14px;
+  cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  transition: var(--transition-smooth);
+  text-shadow: 0 2px 6px rgba(0, 25, 60, 0.45);
 }
 
-.visi-panel-title .title-sparkle {
+.visi-header-tab:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.visi-header-tab.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 6px 18px rgba(0, 35, 75, 0.28),
+    inset 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+.visi-header-tab .title-sparkle {
   color: #fde047;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .btn-close-detail {
@@ -1048,13 +1077,57 @@
 .visi-panel-body {
   flex: 1;
   overflow-y: auto;
-  max-height: clamp(180px, 30vh, 260px);
+  max-height: clamp(240px, 42vh, 360px);
   padding-right: 6px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  animation: smoothPanelContentSwap 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.visi-panel-body.video-mode {
+  overflow: hidden;
+  padding-right: 0;
+  max-height: none;
+  height: 100%;
+  align-items: stretch;
+  justify-content: center;
+}
+
+@keyframes smoothPanelContentSwap {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.inline-orasi-video-frame {
+  width: 100%;
+  height: 100%;
+  min-height: clamp(235px, 38vh, 340px);
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b0f17;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 12px 28px rgba(0, 25, 55, 0.4),
+    0 0 20px rgba(160, 230, 255, 0.35);
+  position: relative;
+  flex: 1;
+}
+
+.inline-orasi-video-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
 }
 
 .visi-block {
@@ -1131,34 +1204,14 @@
   padding-top: 10px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 10px;
 }
 
-.btn-orasi-shortcut {
-  background: linear-gradient(135deg, #028ce3, #00569e);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  color: #ffffff;
-  padding: 7px 16px;
-  border-radius: 20px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: var(--transition-smooth);
-  box-shadow: 0 4px 12px rgba(0, 30, 70, 0.25);
-}
-
-.btn-orasi-shortcut:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(2, 140, 227, 0.55);
-}
-
 /* Kolom Kanan: Dock Paslon Lainnya yang Tergeser */
 .inline-dock {
+  position: relative;
   width: 140px;
   flex-shrink: 0;
   display: flex;
@@ -1167,6 +1220,10 @@
 }
 
 .dock-header {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  right: 0;
   font-family: var(--font-serif-sub);
   font-size: 0.72rem;
   font-weight: 800;
@@ -1174,6 +1231,7 @@
   color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
   text-align: center;
+  pointer-events: none;
 }
 
 .dock-card {
@@ -1288,63 +1346,365 @@
 }
 
 @media (max-width: 1024px) {
-  .candidates-grid { gap: 14px; }
+  .candidates-grid { gap: 18px; }
   .photo-frame, .skeleton-photo { 
-    height: clamp(170px, 28vh, 230px);
+    height: clamp(180px, 32vh, 260px);
     max-height: none;
   }
-  .tv-frame { max-height: 42vh; }
-  .donut-chart-container { width: 200px; height: 200px; }
+  .tv-frame { max-height: 48vh; }
+  .donut-chart-container {
+    width: min(500px, 92vw);
+    max-height: 52vh;
+  }
 }
 
 @media (max-width: 768px) {
   .candidates-grid {
-    grid-template-columns: 1fr;
-    max-width: 290px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-width: 100%;
+  }
+  .candidate-card, .skeleton-card {
+    padding: 10px 10px 12px 10px;
+    border-radius: 10px;
   }
   .photo-frame, .skeleton-photo {
-    height: clamp(180px, 30vh, 250px);
+    height: clamp(130px, 24vh, 200px);
+    margin-bottom: 8px;
   }
-  .candidate-card:nth-child(n+2),
-  .skeleton-card:nth-child(n+2) {
-    display: none;
+  .card-label {
+    font-size: 0.95rem;
+    letter-spacing: 1.5px;
   }
   .qc-stage {
-    gap: 12px;
+    gap: 8px;
     width: 100%;
   }
-  .qc-card {
-    padding: 16px 18px;
-    margin: 0;
-  }
-  .qc-donut-layout {
-    flex-direction: column;
-    gap: 10px;
-  }
   .donut-chart-container {
-    width: 190px;
-    height: 190px;
-    margin: 4px auto;
+    width: min(460px, 96vw);
+    max-height: 48vh;
+    margin: 0 auto;
   }
   .btn-bilik-suara {
-    padding: 11px 28px;
-    font-size: 1.05rem;
+    padding: 9px 24px;
+    font-size: 0.95rem;
     letter-spacing: 2px;
     flex-shrink: 0;
   }
   .tv-frame {
-    width: 96%;
+    width: 94%;
     aspect-ratio: 16 / 9;
   }
-  .orasi-carousel-stage {
-    gap: 6px;
-  }
-  .orasi-nav-arrow {
-    width: 38px;
-    height: 38px;
-  }
-  .orasi-tab-pill {
-    padding: 5px 12px;
-    letter-spacing: 1px;
+  .btn-orasi-capsule {
+    min-width: min(320px, 86vw);
+    padding: 11px 28px;
   }
 }
+
+/* ==========================================================================
+   SECTION 4: GALERI DOKUMENTASI (DESAIN PERSIS REFERENSI 5-SLOT BENTO GRID)
+   ========================================================================== */
+
+.section-galeri {
+  padding-top: clamp(32px, 5.5vh, 54px);
+  padding-bottom: clamp(18px, 3vh, 28px);
+}
+
+.galeri-stage {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1120px;
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2vh, 20px);
+}
+
+.galeri-main-heading {
+  font-family: var(--font-mono-display);
+  font-size: clamp(2rem, 3.8vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow:
+    0 0 18px rgba(255, 255, 255, 0.95),
+    0 0 36px rgba(195, 238, 255, 0.85),
+    0 2px 8px rgba(8, 60, 110, 0.4);
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.galeri-carousel-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+}
+
+.galeri-viewport {
+  width: 100%;
+  max-width: 1020px;
+  overflow: hidden;
+  padding: 4px 6px;
+}
+
+.galeri-track {
+  display: flex;
+  width: 100%;
+  transform: translate3d(0%, 0, 0);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.galeri-page {
+  min-width: 100%;
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tata Letak 5-Slot Bento Grid Simetris Persis Referensi */
+.galeri-bento-grid {
+  width: 100%;
+  height: clamp(320px, 65vh, 510px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  column-gap: clamp(16px, 3vw, 36px);
+  row-gap: clamp(12px, 2.2vh, 22px);
+}
+
+/* Slot 1: Kiri Atas (Kotak Besar ~58% Tinggi) */
+.galeri-slot-1 {
+  grid-column: 1;
+  grid-row: 1 / 8;
+}
+
+/* Slot 2: Kiri Bawah (Persegi Panjang ~42% Tinggi) */
+.galeri-slot-2 {
+  grid-column: 1;
+  grid-row: 8 / 13;
+}
+
+/* Slot 3: Tengah Penuh (Vertikal Portrait 100% Tinggi) */
+.galeri-slot-3 {
+  grid-column: 2;
+  grid-row: 1 / 13;
+}
+
+/* Slot 4: Kanan Atas (Persegi Panjang ~42% Tinggi) */
+.galeri-slot-4 {
+  grid-column: 3;
+  grid-row: 1 / 6;
+}
+
+/* Slot 5: Kanan Bawah (Kotak Besar ~58% Tinggi) */
+.galeri-slot-5 {
+  grid-column: 3;
+  grid-row: 6 / 13;
+}
+
+.galeri-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f5f9fc;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 12px 28px rgba(6, 52, 98, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.galeri-card.has-photo {
+  cursor: pointer;
+  border: 3px solid #f5f9fc;
+}
+
+.galeri-card.has-photo:hover {
+  transform: translateY(-4px) scale(1.018);
+  box-shadow:
+    0 18px 36px rgba(4, 42, 82, 0.34),
+    0 0 22px rgba(255, 255, 255, 0.55);
+}
+
+.galeri-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 10px;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.galeri-card.has-photo:hover .galeri-card-img {
+  transform: scale(1.06);
+}
+
+.galeri-card-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 18px 14px 12px 14px;
+  background: linear-gradient(180deg, rgba(4, 28, 56, 0) 0%, rgba(4, 28, 56, 0.82) 100%);
+  color: #ffffff;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.galeri-card.has-photo:hover .galeri-card-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.galeri-card-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.galeri-card-desc {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.86);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.galeri-nav-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 8px 22px rgba(0, 35, 75, 0.28);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.galeri-nav-arrow:hover {
+  background: #ffffff;
+  color: #026bb0;
+  transform: scale(1.08);
+}
+
+.galeri-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.galeri-page-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.45);
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.35s ease;
+}
+
+.galeri-page-dot.active {
+  width: 22px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
+}
+
+/* Modal Lightbox Preview Foto Galeri */
+.modal-galeri-card {
+  max-width: 680px !important;
+  width: 92vw !important;
+  padding: 18px !important;
+  text-align: left !important;
+}
+
+.galeri-preview-frame {
+  width: 100%;
+  max-height: 58vh;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.galeri-preview-frame img {
+  width: 100%;
+  max-height: 58vh;
+  object-fit: contain;
+  display: block;
+}
+
+.galeri-preview-meta {
+  margin-top: 14px;
+}
+
+.galeri-preview-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: #e0f2fe;
+  color: #026bb0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.galeri-preview-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 6px;
+}
+
+.galeri-preview-desc {
+  font-size: 0.86rem;
+  color: #475569;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+@media (max-width: 768px) {
+  .galeri-bento-grid {
+    height: clamp(280px, 60vh, 420px);
+    column-gap: 10px;
+    row-gap: 10px;
+  }
+  .galeri-card {
+    border-radius: 10px;
+  }
+}
+

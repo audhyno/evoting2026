@@ -62,10 +62,59 @@ const MOCK_PEMILIH_INIT = [
   { id_pemilih: 'USR-0010', username: 'revan#99',   password: 'q1Zw6M', nama_lengkap: 'Revan Aditya Kusuma', kelas: 'XII IPS 3',  status_memilih: 'BELUM', waktu_memilih: '' }
 ];
 
+const MOCK_GALERI_INIT = [
+  {
+    id_galeri: 'GLR-01',
+    urutan: 1,
+    posisi_slot: 'Kiri Atas',
+    judul: 'Debat Terbuka Kandidat OSIS',
+    foto_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Penyampaian gagasan dan program kerja unggulan kandidat di hadapan warga SMAN 1 Pontianak.',
+    aktif: 'YA'
+  },
+  {
+    id_galeri: 'GLR-02',
+    urutan: 2,
+    posisi_slot: 'Kiri Bawah',
+    judul: 'Antusiasme Warga SMANSA',
+    foto_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Partisipasi aktif siswa-siswi dalam rangkaian Pesta Demokrasi SMAN 1 Pontianak.',
+    aktif: 'YA'
+  },
+  {
+    id_galeri: 'GLR-03',
+    urutan: 3,
+    posisi_slot: 'Tengah Vertikal',
+    judul: 'Orasi Visi & Misi Paslon',
+    foto_url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Momen pemaparan visi dan misi calon Ketua & Wakil Ketua OSIS periode 2026/2027.',
+    aktif: 'YA'
+  },
+  {
+    id_galeri: 'GLR-04',
+    urutan: 4,
+    posisi_slot: 'Kanan Atas',
+    judul: 'Simulasi Bilik E-Voting',
+    foto_url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Persiapan sistem pemilihan elektronik berbasis tablet yang cepat, rahasia, dan akurat.',
+    aktif: 'YA'
+  },
+  {
+    id_galeri: 'GLR-05',
+    urutan: 5,
+    posisi_slot: 'Kanan Bawah',
+    judul: 'Komisi Pemilihan OSIS (KPO)',
+    foto_url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
+    keterangan: 'Panitia pelaksana Pemilihan Ketua & Wakil Ketua OSIS SMAN 1 Pontianak.',
+    aktif: 'YA'
+  }
+];
+
 // Menggunakan sessionStorage agar status mock bertahan selama sesi browser tanpa merusak DPT asli
 const STORAGE_KEYS = {
   PASLON: 'evoting_mock_paslon',
-  PEMILIH: 'evoting_mock_pemilih'
+  PEMILIH: 'evoting_mock_pemilih',
+  GALERI: 'evoting_mock_galeri'
 };
 
 function getMockPaslonStore() {
@@ -92,6 +141,15 @@ function getMockPemilihStore() {
 
 function saveMockPemilihStore(data) {
   sessionStorage.setItem(STORAGE_KEYS.PEMILIH, JSON.stringify(data));
+}
+
+function getMockGaleriStore() {
+  const stored = sessionStorage.getItem(STORAGE_KEYS.GALERI);
+  if (stored) {
+    try { return JSON.parse(stored); } catch (e) { /* fallback default */ }
+  }
+  sessionStorage.setItem(STORAGE_KEYS.GALERI, JSON.stringify(MOCK_GALERI_INIT));
+  return JSON.parse(JSON.stringify(MOCK_GALERI_INIT));
 }
 
 /**
@@ -421,10 +479,24 @@ async function submitVoteChoice(idPemilih, username, idPaslon, tokenSession) {
   };
 }
 
+/**
+ * Mengambil daftar foto dan dokumentasi Galeri dari sheet "galeri"
+ */
+async function fetchGaleriList() {
+  const remoteRes = await requestApi('get_galeri', { method: 'GET' });
+  if (remoteRes && remoteRes.status === 'success' && Array.isArray(remoteRes.data) && remoteRes.data.length > 0) {
+    return remoteRes.data;
+  }
+
+  // Fallback Mock Data Galeri
+  return getMockGaleriStore();
+}
+
 window.VotingAPI = {
   getApiUrl: function () { return API_URL; },
   formatImageUrl: formatImageUrl,
   fetchPaslonList: fetchPaslonList,
+  fetchGaleriList: fetchGaleriList,
   fetchQuickCountData: fetchQuickCountData,
   authenticateVoter: authenticateVoter,
   submitVoteChoice: submitVoteChoice

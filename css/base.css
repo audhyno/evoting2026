@@ -9,34 +9,36 @@
  */
 
 :root {
-  /* Palet Warna Utama SMAN 1 Pontianak (zianxy Theme) */
-  --primary-blue: #0293ee;
-  --deep-sky-blue: #0077c8;
+  /* Palet Warna Utama SMAN 1 Pontianak (Reference Altar Blue Theme) */
+  --primary-blue: #1d9be3;
+  --deep-sky-blue: #1779bc;
   --dark-navy: #002d55;
-  --ambient-blue: #149df2;
+  --ambient-blue: #22a3ec;
   --card-white: #ffffff;
-  --gold-glow: rgba(255, 235, 179, 0.85);
-  --tv-glow: rgba(180, 235, 255, 0.95);
-  --monitor-bezel: #101418;
+  --gold-glow: rgba(255, 244, 156, 0.92);
+  --tv-glow: rgba(220, 245, 255, 0.96);
+  --monitor-bezel: #121518;
 
-  /* Quick Count 4-Warna Palette */
-  --qc-paslon1: #0293ee;       /* Paslon 1: Biru Elektrik */
-  --qc-paslon2: #10b981;       /* Paslon 2: Hijau Emerald */
-  --qc-paslon3: #f59e0b;       /* Paslon 3: Kuning Amber */
-  --qc-belum: #94a3b8;         /* Belum Memilih: Abu-Abu Netral */
+  /* Quick Count 4-Warna Palette Sesuai Referensi */
+  --qc-shade-1: #3b73ac;
+  --qc-shade-2: #125b88;
+  --qc-shade-3: #1f97dc;
+  --qc-shade-4: #c6f1ff;
 
   /* Skeleton Shimmer Loading Tokens */
   --shimmer-base: #e2e8f0;
   --shimmer-highlight: #f8fafc;
 
-  /* Tipografi Elegan */
-  --font-serif-title: 'Cinzel Decorative', serif;
-  --font-serif-sub: 'Cinzel', serif;
+  /* Tipografi Sesuai Referensi */
+  --font-script: 'Great Vibes', cursive;
+  --font-serif-title: 'Playfair Display', 'Cinzel', serif;
+  --font-serif-sub: 'Playfair Display', 'Cinzel', serif;
+  --font-mono-display: 'Share Tech Mono', monospace;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
 
-  /* Transisi Halus & Terlihat Jelas (Cinematic Slower Pace) */
-  --transition-smooth: all 0.65s cubic-bezier(0.25, 1, 0.4, 1);
-  --transition-hover: all 0.5s cubic-bezier(0.25, 1, 0.4, 1);
+  /* Transisi Halus & Terlihat Jelas */
+  --transition-smooth: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-hover: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 *, *::before, *::after {
@@ -103,13 +105,36 @@ html, body {
   scroll-snap-stop: always;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: clamp(86px, 11.5vh, 114px) 24px 20px 24px;
+  padding: clamp(78px, 10vh, 104px) 24px 24px 24px;
   overflow: hidden;
-  background: linear-gradient(180deg, #028ce3 0%, #069af1 40%, #0293ee 100%);
+  background:
+    radial-gradient(ellipse 68% 60% at 50% 52%, rgba(165, 228, 255, 0.32) 0%, rgba(29, 155, 227, 0) 70%),
+    linear-gradient(180deg, #1fa2e8 0%, #1c8ed3 52%, #1877b8 100%);
 }
 
+/* Altar Gradient Spesifik Per Section */
+.section-paslon {
+  background:
+    radial-gradient(ellipse 65% 58% at 50% 54%, rgba(155, 222, 255, 0.28) 0%, rgba(29, 155, 227, 0) 72%),
+    linear-gradient(180deg, #1ea0e6 0%, #1b8bce 55%, #1775b5 100%);
+}
+
+.section-orasi {
+  background:
+    radial-gradient(ellipse 62% 54% at 50% 45%, rgba(255, 255, 255, 0.92) 0%, rgba(185, 232, 255, 0.65) 36%, rgba(29, 154, 226, 0) 70%),
+    linear-gradient(180deg, #1fa1e7 0%, #1b8bce 55%, #1775b6 100%);
+}
+
+.section-qc,
+.section-galeri {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 52%, rgba(175, 230, 255, 0.36) 0%, rgba(29, 154, 226, 0) 68%),
+    linear-gradient(180deg, #1fa1e7 0%, #1b8bce 55%, #1775b6 100%);
+}
+
+/* Ornamen Gambar Kristal Segitiga Sesuai Referensi */
 .crystal-overlay {
   position: absolute;
   inset: 0;
@@ -118,58 +143,134 @@ html, body {
   overflow: hidden;
 }
 
-.shard {
+.crystal-asset {
   position: absolute;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 100%);
-  backdrop-filter: blur(2px);
-  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.45);
-  filter: drop-shadow(0 6px 14px rgba(0, 70, 120, 0.2));
-  animation: floatShard 12s ease-in-out infinite alternate;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 6px 16px rgba(10, 75, 130, 0.22));
 }
 
-@keyframes floatShard {
-  0% { transform: translateY(0px) rotate(0deg); }
-  100% { transform: translateY(-16px) rotate(5deg); }
+/* Posisi Kristal di Slide 0 (Hero) Persis Referensi */
+.hero-crystal-1 {
+  top: 48%;
+  left: -52px;
+  width: clamp(140px, 16vw, 220px);
+  transform: rotate(-32deg);
+  opacity: 0.95;
 }
 
-.shard-tl {
-  top: 6%;
+.hero-crystal-2 {
+  bottom: 14%;
+  left: 1%;
+  width: clamp(110px, 12vw, 165px);
+  transform: rotate(22deg);
+  opacity: 0.92;
+}
+
+.hero-crystal-3 {
+  bottom: -26px;
   left: -20px;
-  width: 130px;
-  height: 140px;
-  clip-path: polygon(0 20%, 80% 0, 100% 80%, 20% 100%);
-  transform: rotate(18deg);
-  opacity: 0.85;
+  width: clamp(95px, 10vw, 140px);
+  transform: rotate(-18deg);
+  opacity: 0.9;
 }
 
-.shard-tr {
-  top: 10%;
-  right: -25px;
-  width: 150px;
-  height: 130px;
-  clip-path: polygon(25% 0%, 100% 35%, 75% 100%, 0% 65%);
-  transform: rotate(-15deg);
-  opacity: 0.85;
+.hero-crystal-4 {
+  bottom: 1%;
+  left: 5.5%;
+  width: clamp(100px, 11vw, 150px);
+  transform: rotate(36deg);
+  opacity: 0.92;
 }
 
-.shard-bl {
-  bottom: 8%;
-  left: 3%;
-  width: 100px;
-  height: 110px;
-  clip-path: polygon(20% 0%, 100% 30%, 80% 100%, 0% 80%);
+.hero-crystal-5 {
+  bottom: 2%;
+  left: 14%;
+  width: clamp(130px, 14.5vw, 195px);
+  transform: rotate(-14deg);
+  opacity: 0.95;
+}
+
+.hero-crystal-6 {
+  bottom: 1%;
+  left: 26%;
+  width: clamp(105px, 11.5vw, 155px);
+  transform: rotate(42deg);
+  opacity: 0.88;
+}
+
+.hero-crystal-7 {
+  top: 52%;
+  right: -18px;
+  width: clamp(120px, 13vw, 175px);
   transform: rotate(35deg);
-  opacity: 0.75;
+  opacity: 0.92;
 }
 
-.shard-br {
-  bottom: 8%;
-  right: 4%;
-  width: 120px;
-  height: 110px;
-  clip-path: polygon(35% 0%, 100% 55%, 65% 100%, 0% 45%);
-  transform: rotate(-25deg);
-  opacity: 0.8;
+.hero-crystal-8 {
+  bottom: 6%;
+  right: 3%;
+  width: clamp(125px, 13.5vw, 180px);
+  transform: rotate(-22deg);
+  opacity: 0.92;
+}
+
+.hero-crystal-9 {
+  bottom: -18px;
+  right: -32px;
+  width: clamp(105px, 11vw, 150px);
+  transform: rotate(28deg);
+  opacity: 0.88;
+}
+
+/* Posisi Kristal di Slide 1 (Paslon) Persis Referensi */
+.paslon-crystal-1 {
+  top: -42px;
+  left: 15%;
+  width: clamp(120px, 13vw, 175px);
+  transform: rotate(158deg);
+  opacity: 0.85;
+}
+
+.paslon-crystal-2 {
+  top: 48%;
+  left: -45px;
+  width: clamp(145px, 16vw, 215px);
+  transform: rotate(-34deg);
+  opacity: 0.95;
+}
+
+.paslon-crystal-3 {
+  bottom: 7%;
+  left: -32px;
+  width: clamp(115px, 12.5vw, 170px);
+  transform: rotate(20deg);
+  opacity: 0.9;
+}
+
+.paslon-crystal-4 {
+  bottom: 2%;
+  right: 31%;
+  width: clamp(100px, 11vw, 145px);
+  transform: rotate(-38deg);
+  opacity: 0.65;
+}
+
+.paslon-crystal-5 {
+  bottom: -34px;
+  right: 9%;
+  width: clamp(150px, 16.5vw, 220px);
+  transform: rotate(14deg);
+  opacity: 0.92;
+}
+
+.paslon-crystal-6 {
+  top: 56%;
+  right: -42px;
+  width: clamp(120px, 13vw, 175px);
+  transform: rotate(-28deg);
+  opacity: 0.85;
 }
 
 /* Persistent Single Header Nav Diam Tenang di Posisi Atas Seluruh Section */
@@ -179,55 +280,61 @@ html, body {
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 48px);
-  max-width: 1160px;
+  max-width: 1220px;
   z-index: 95;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 6px;
   flex-shrink: 0;
   pointer-events: none;
 }
 
-/* Sembunyikan duplikasi nav pada section lain agar tidak ada logo terus menerus */
+/* Sembunyikan duplikasi nav pada section lain */
 .snap-section:not(#sec-0) .section-nav {
   display: none !important;
 }
 
-/* Ukuran Logo Diperbesar & Tajam (Diam & Statis di Posisi) */
+/* Ukuran Logo Tajam & Presisi Sesuai Referensi */
 .brand-logo {
   pointer-events: auto;
-  height: clamp(68px, 9.5vh, 92px);
+  height: clamp(64px, 9vh, 88px);
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
   transition: transform 0.25s ease, filter 0.25s ease;
   cursor: pointer;
 }
 
-/* Logo E-Voting Diperbesar Ekstra Signifikan */
 .brand-logo.logo-evoting {
-  height: clamp(96px, 14vh, 140px);
-  max-width: 360px;
-  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.45));
+  height: clamp(86px, 12.5vh, 124px);
+  max-width: 340px;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
 }
 
 .brand-logo:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(0 6px 20px rgba(255, 255, 255, 0.45)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+  transform: scale(1.04);
+  filter: drop-shadow(0 6px 18px rgba(255, 255, 255, 0.45)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
 }
 
 .brand-logo:active {
   transform: scale(0.97);
 }
 
+/* Slide 0: Hero Background dengan Foto Udara SMAN 1 Pontianak & Gradasi Altar Biru di Bawah */
 .section-hero {
   background-image: 
-    linear-gradient(180deg, rgba(3, 40, 70, 0.45) 0%, rgba(2, 147, 238, 0.75) 75%, #0293ee 100%),
+    linear-gradient(
+      180deg,
+      rgba(68, 118, 168, 0.48) 0%,
+      rgba(55, 132, 188, 0.42) 48%,
+      rgba(32, 152, 224, 0.78) 78%,
+      #1ea0e6 100%
+    ),
     url('../assets/images/bg.png'),
     url('https://raw.githubusercontent.com/fauziopa/e-voting/main/assets/images/bg.png');
   background-size: cover;
-  background-position: center top;
+  background-position: center center;
   background-repeat: no-repeat;
 }
 
@@ -241,89 +348,60 @@ html, body {
 
 .title-pemilihan {
   font-family: var(--font-serif-title);
-  font-size: clamp(2.3rem, 4.4vw, 3.8rem);
-  font-weight: 900;
-  letter-spacing: 5px;
+  font-size: clamp(2.5rem, 5vw, 4.3rem);
+  font-weight: 800;
+  letter-spacing: 3px;
   color: #ffffff;
   text-shadow: 
-    0 0 18px rgba(255, 255, 255, 0.85),
-    0 0 35px rgba(255, 245, 210, 0.5),
-    0 4px 14px rgba(0, 0, 0, 0.5);
-  line-height: 1.1;
+    0 0 22px rgba(255, 255, 255, 0.92),
+    0 0 42px rgba(255, 255, 255, 0.55),
+    0 4px 14px rgba(0, 35, 70, 0.45);
+  line-height: 1.08;
+}
+
+.title-pemilihan .script-initial {
+  font-family: var(--font-script);
+  font-size: 1.52em;
+  font-weight: 400;
+  display: inline-block;
+  margin-right: 2px;
+  transform: translateY(4px);
+  text-shadow:
+    0 0 24px rgba(255, 255, 255, 0.98),
+    0 0 45px rgba(255, 255, 255, 0.65);
 }
 
 .title-sub {
   font-family: var(--font-serif-sub);
-  font-size: clamp(1.5rem, 2.9vw, 2.4rem);
+  font-size: clamp(1.85rem, 3.8vw, 3.25rem);
   font-weight: 800;
-  letter-spacing: 7px;
-  color: #fff9e6;
+  letter-spacing: 4px;
+  color: #ffffff;
   margin-top: 8px;
   text-shadow: 
-    0 0 16px var(--gold-glow),
-    0 4px 14px rgba(0, 0, 0, 0.5);
+    0 0 20px rgba(255, 255, 255, 0.9),
+    0 4px 14px rgba(0, 35, 70, 0.45);
+}
+
+.title-sub .highlight-gold {
+  color: #fff59e;
+  text-shadow:
+    0 0 18px rgba(255, 245, 158, 0.95),
+    0 0 36px rgba(255, 230, 105, 0.75),
+    0 4px 12px rgba(0, 35, 70, 0.4);
 }
 
 .title-osis {
   font-family: var(--font-serif-sub);
-  font-size: clamp(1.7rem, 3.2vw, 2.7rem);
+  font-size: clamp(2.2rem, 4.3vw, 3.7rem);
   font-weight: 800;
-  letter-spacing: 14px;
+  letter-spacing: 5px;
   color: #ffffff;
-  margin-top: 6px;
+  margin-top: 10px;
   text-shadow: 
-    0 0 22px rgba(255, 255, 255, 0.95),
-    0 4px 14px rgba(0, 0, 0, 0.5);
-}
-
-.school-badge {
-  display: inline-block;
-  margin-top: 18px;
-  padding: 7px 24px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(8px);
-  border-radius: 30px;
-  font-size: clamp(0.75rem, 1.1vw, 0.9rem);
-  font-weight: 700;
-  letter-spacing: 3px;
-  color: #ffffff;
-  text-transform: uppercase;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
-
-.hero-footer-hint {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  opacity: 0.9;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.hero-footer-hint:hover {
-  opacity: 1;
-  transform: translateY(3px);
-}
-
-.hint-text {
-  font-size: 0.78rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.hint-arrow {
-  animation: bounceArrow 1.8s infinite;
-}
-
-@keyframes bounceArrow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+    0 0 24px rgba(255, 255, 255, 0.95),
+    0 0 44px rgba(255, 255, 255, 0.55),
+    0 4px 14px rgba(0, 35, 70, 0.45);
 }
 
 .section-footer-note {

@@ -9,8 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
-// Serve static assets from the root directory
+// Serve static assets from the root and public directories
 app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // SPA fallback: send index.html for any unhandled GET route
 app.get('*', (req, res) => {

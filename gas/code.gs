@@ -15,14 +15,15 @@ var API_CONFIG = {
   SHEETS: {
     PEMILIH: 'pemilih',
     PASLON: 'paslon',
-    LOG_SUARA: 'log_suara'
+    LOG_SUARA: 'log_suara',
+    GALERI: 'galeri'
   },
   LOCK_TIMEOUT_MS: 15000 // 15 detik antrean lock untuk menangani 50 tablet simultan
 };
 
 /**
- * Handler HTTP GET: Menangani permintaan data publik dan quick count anonim
- * Endpoint: ?action=get_paslon | ?action=get_quick_count | ?action=ping
+ * Handler HTTP GET: Menangani permintaan data publik, galeri, dan quick count anonim
+ * Endpoint: ?action=get_paslon | ?action=get_galeri | ?action=get_quick_count | ?action=ping
  */
 function doGet(e) {
   try {
@@ -38,6 +39,9 @@ function doGet(e) {
 
       case 'get_paslon':
         return handleGetPaslon();
+
+      case 'get_galeri':
+        return handleGetGaleri();
 
       case 'get_quick_count':
         return handleGetQuickCount();
@@ -99,6 +103,57 @@ function handleGetPaslon() {
   return buildJsonResponse({
     status: 'success',
     data: paslonList
+  });
+}
+
+/**
+ * Mengambil daftar foto dan dokumentasi pada sheet "galeri"
+ */
+function handleGetGaleri() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(API_CONFIG.SHEETS.GALERI);
+
+  if (!sheet) {
+    return buildJsonResponse({
+      status: 'success',
+      data: [],
+      message: 'Sheet galeri belum diinisialisasi.'
+    });
+  }
+
+  var lastRow = sheet.getLastRow();
+  if (lastRow <= 1) {
+    return buildJsonResponse({ status: 'success', data: [] });
+  }
+
+  var lastCol = sheet.getLastColumn();
+  var headers = sheet.getRange(1, 1, 1, lastCol).getDisplayValues()[0];
+  var rawData = sheet.getRange(2, 1, lastRow - 1, lastCol).getDisplayValues();
+
+  var galeriList = [];
+  rawData.forEach(function (row, idx) {
+    var item = {};
+    headers.forEach(function (key, colIdx) {
+      item[key.trim().toLowerCase()] = row[colIdx];
+    });
+
+    var statusAktif = String(item.aktif || 'YA').trim().toUpperCase();
+    if (statusAktif === 'TIDAK' || statusAktif === 'FALSE' || statusAktif === '0') {
+      return;
+    }
+
+    item.urutan = parseInt(item.urutan, 10) || (idx + 1);
+    galeriList.push(item);
+  });
+
+  galeriList.sort(function (a, b) {
+    return Number(a.urutan) - Number(b.urutan);
+  });
+
+  return buildJsonResponse({
+    status: 'success',
+    data: galeriList,
+    updated_at: getFormattedTimestamp()
   });
 }
 
