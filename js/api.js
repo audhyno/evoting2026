@@ -21,7 +21,7 @@ const MOCK_PASLON_INIT = [
     nama_paslon: 'Ksatria Arya & Amanda Putri',
     slogan: 'Kreatif, Kolaboratif, dan Berintegritas Nyata',
     foto_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
-    youtube_video_id: 'dQw4w9WgXcQ',
+    youtube_video_id: 'pD5AaON3dBE',
     visi_misi: 'Visi: Menjadikan OSIS SMAN 1 Pontianak sebagai wadah inovasi digital dan kepemimpinan berakhlak mulia.\nMisi: Optimalisasi kegiatan ekstrakurikuler, digitalisasi sistem informasi siswa, dan penguatan kepedulian lingkungan.',
     perolehan_suara: 18
   },
@@ -32,7 +32,7 @@ const MOCK_PASLON_INIT = [
     nama_paslon: 'Rafi Pratama & Naila Zahra',
     slogan: 'Solutif, Progresif, Menuju Prestasi Gemilang',
     foto_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
-    youtube_video_id: 'dQw4w9WgXcQ',
+    youtube_video_id: 'XLirKHUzDy8',
     visi_misi: 'Visi: Mewujudkan siswa-siswi SMAN 1 Pontianak yang unggul dalam akademik, seni, dan solidaritas sosial.\nMisi: Mengadakan forum diskusi berkala, meningkatkan prestasi olimpiade, serta memajukan sarana prasarana minat bakat.',
     perolehan_suara: 24
   },
@@ -43,7 +43,7 @@ const MOCK_PASLON_INIT = [
     nama_paslon: 'Fajar Ilham & Keysha Anindya',
     slogan: 'Bersatu dalam Semangat, Maju dengan Aksi Nyata',
     foto_url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80',
-    youtube_video_id: 'dQw4w9WgXcQ',
+    youtube_video_id: 'hb58ZUUI19o',
     visi_misi: 'Visi: Menumbuhkan budaya kolaboratif yang inklusif dan responsif terhadap aspirasi seluruh warga sekolah.\nMisi: Program keterbukaan saran siswa, pekan olahraga dan seni tahunan yang semarak, serta mentoring adik kelas.',
     perolehan_suara: 12
   }

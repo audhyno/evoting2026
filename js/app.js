@@ -280,13 +280,20 @@ function renderErrorCandidatesState(container, message) {
   container.innerHTML = errorHtml;
 }
 
+// Daftar ID Video YouTube Orasi Resmi Paslon 1, 2, dan 3
+const ORASI_VIDEO_IDS = [
+  'pD5AaON3dBE', // Paslon 1: https://youtu.be/pD5AaON3dBE
+  'XLirKHUzDy8', // Paslon 2: https://youtu.be/XLirKHUzDy8
+  'hb58ZUUI19o'  // Paslon 3: https://youtu.be/hb58ZUUI19o
+];
+
 /**
- * Menyinkronkan video orasi YouTube di Bagian Orasi berdasarkan data Spreadsheet
+ * Menyinkronkan video orasi YouTube di Bagian Orasi berdasarkan daftar video resmi paslon
  * @param {Array} list - Daftar paslon dari database
  */
 function syncOrasiYouTubeVideos(list) {
   list.forEach(function (paslon, idx) {
-    const videoId = paslon.youtube_video_id || 'dQw4w9WgXcQ';
+    const videoId = ORASI_VIDEO_IDS[idx] || paslon.youtube_video_id || 'pD5AaON3dBE';
     const iframeId = 'iframeOrasi' + (idx + 1);
     const labelId = 'labelOrasi' + (idx + 1);
 
